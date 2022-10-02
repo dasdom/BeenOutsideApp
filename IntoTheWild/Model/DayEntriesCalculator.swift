@@ -11,9 +11,7 @@ struct DayEntriesCalculator {
     return formatter
   }()
 
-  static func durationFor(
-    date: Date,
-    from regionUpdates: [RegionUpdate]) -> TimeInterval {
+  static func durationFor(date: Date, from regionUpdates: [RegionUpdate]) -> TimeInterval {
 
       var duration = 0.0
       var enter: RegionUpdate?
@@ -43,7 +41,11 @@ struct DayEntriesCalculator {
         let duration = durationFor(date: date, from: regionUpdates)
         
         dayEntries.append(DayEntry(duration: duration,
-                                   weekday: date))
+                                   weekday: date,
+                                   type: .outside))
+//        dayEntries.append(DayEntry(duration: 24.0 * 60 * 60 - duration,
+//                                   weekday: date,
+//                                   type: .home))
       }
     }
     

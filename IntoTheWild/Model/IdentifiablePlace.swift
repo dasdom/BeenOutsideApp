@@ -3,6 +3,7 @@
 //
 
 import Foundation
+import CoreLocation
 
 struct IdentifiablePlace: Identifiable {
   let id: UUID

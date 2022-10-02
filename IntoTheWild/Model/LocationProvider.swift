@@ -5,6 +5,7 @@
 import UIKit
 import CoreLocation
 import MapKit
+import SQLite3
 
 func date(year: Int, month: Int, day: Int = 1) -> Date {
   Calendar.current.date(from: DateComponents(year: year, month: month, day: day)) ?? Date()
@@ -14,6 +15,7 @@ class LocationProvider: NSObject,
                         CLLocationManagerDelegate,
                         ObservableObject {
 
+  var db : OpaquePointer?
   @Published var wrongAuthorization = false
   @Published var coordinateRegion: MKCoordinateRegion? {
     didSet {
@@ -28,7 +30,7 @@ class LocationProvider: NSObject,
   @Published var last28DaysTotal: Duration = .seconds(0)
 
   let locationManager: CLLocationManager
-  var numberOfDays: Int = 30 {
+  var numberOfDays: Int = 7 {
     didSet {
       updateValues()
     }
@@ -53,6 +55,10 @@ class LocationProvider: NSObject,
     if let homeCoordinate = loadHome() {
       coordinateRegion = MKCoordinateRegion(center: homeCoordinate.clCoordinate, latitudinalMeters: 100, longitudinalMeters: 100)
     }
+  }
+
+  deinit {
+    sqlite3_close(db)
   }
 
   func locationManager(_ manager: CLLocationManager,
@@ -120,15 +126,16 @@ class LocationProvider: NSObject,
             break
           }
           let startOfNextDay = calendar.startOfDay(for: nextDayAfterBeginningOfDuration)
-          let enterUpdate = RegionUpdate(date: startOfNextDay, updateType: .enter)
+          let enterUpdate = RegionUpdate(date: startOfNextDay, updateTypeRaw: UpdateType.enter.rawValue)
           regionUpdates.append(enterUpdate)
-          let exitUpdate = RegionUpdate(date: startOfNextDay, updateType: .exit)
+          let exitUpdate = RegionUpdate(date: startOfNextDay, updateTypeRaw: UpdateType.exit.rawValue)
           regionUpdates.append(exitUpdate)
           beginningOfDuration = startOfNextDay
         }
       }
-      let regionUpdate = RegionUpdate(date: now, updateType: type)
+      var regionUpdate = RegionUpdate(date: now, updateTypeRaw: type.rawValue)
       regionUpdates.append(regionUpdate)
+      regionUpdate.insert(into: db)
 
       writeRegionUpdates()
     }
@@ -139,22 +146,38 @@ class LocationProvider: NSObject,
   }
 
   func writeRegionUpdates() {
-    do {
-      let data = try JSONEncoder().encode(regionUpdates)
-      try data.write(to: FileManager.regionUpdatesDataPath(),
-                     options: .atomic)
-    } catch {
-      print("error: \(error)")
-    }
+//    sqlite3_close(db)
+//    do {
+//      let data = try JSONEncoder().encode(regionUpdates)
+//      try data.write(to: FileManager.regionUpdatesDataPath(),
+//                     options: .atomic)
+//    } catch {
+//      print("error: \(error)")
+//    }
   }
 
   func loadRegionUpdates() {
-    do {
-      let data = try Data(contentsOf: FileManager.regionUpdatesDataPath())
-      regionUpdates = try JSONDecoder().decode([RegionUpdate].self,
-                                               from: data)
-    } catch {
-      print("error: \(error)")
+    let sqliteURL = FileManager.regionUpdatesSQLitePath()
+    let path = sqliteURL.path
+    if FileManager.default.fileExists(atPath: path) {
+      sqlite3_open_v2(path, &db, SQLITE_OPEN_READWRITE, nil)
+      regionUpdates = RegionUpdate.fetch(from: db, orderBy: "date") ?? []
+    } else {
+      let rc = BeenOutside.create(sqliteURL.path, in: &db)
+      if rc != SQLITE_OK {
+        print("\(#filePath), \(#line): Could not create db.")
+      }
+      do {
+        let data = try Data(contentsOf: FileManager.regionUpdatesDataPath())
+        regionUpdates = try JSONDecoder().decode([RegionUpdate].self,
+                                                 from: data)
+        for regionUpdate in regionUpdates {
+          var mutableRegionUpdate = regionUpdate
+          mutableRegionUpdate.insert(into: db)
+        }
+      } catch {
+        print("error: \(error)")
+      }
     }
   }
 
@@ -179,7 +202,7 @@ class LocationProvider: NSObject,
 
   func updateValues() {
     dayEntries = DayEntriesCalculator.dayEntries(from: regionUpdates, numberOfDays: numberOfDays)
-    let totalSeconds = dayEntries.map({ $0.duration }).reduce(0.0, +)
+    let totalSeconds = dayEntries.filter({ $0.type == .outside }).map({ $0.duration }).reduce(0.0, +)
     last28DaysTotal = .seconds(totalSeconds)
     average = totalSeconds / 60.0 / 60.0 / Double(numberOfDays)
     print("totalSeconds: \(totalSeconds), average: \(average), numberOfDays: \(numberOfDays)")

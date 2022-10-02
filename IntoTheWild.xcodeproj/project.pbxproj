@@ -8,10 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		F207AC1D28E6CFBF0081EF64 /* IdentifiablePlace.swift in Sources */ = {isa = PBXBuildFile; fileRef = F207AC1C28E6CFBF0081EF64 /* IdentifiablePlace.swift */; };
-		F227EC0023B8E80B007C6B2A /* RegionUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F227EBFF23B8E80B007C6B2A /* RegionUpdate.swift */; };
+		F207AC2128E7247C0081EF64 /* SQLighter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F207AC2028E7247C0081EF64 /* SQLighter.swift */; };
+		F207AC2228E744BC0081EF64 /* RegionUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F227EBFF23B8E80B007C6B2A /* RegionUpdate.swift */; };
 		F227EC0223B8E9C3007C6B2A /* UpdateType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F227EC0123B8E9C3007C6B2A /* UpdateType.swift */; };
 		F227EC0423B9FE2D007C6B2A /* FileManagerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F227EC0323B9FE2D007C6B2A /* FileManagerExtension.swift */; };
 		F227EC0A23BA6209007C6B2A /* DayEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = F227EC0923BA6209007C6B2A /* DayEntry.swift */; };
+		F228A4C628E78751007EF4E3 /* DurationChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = F228A4C528E78751007EF4E3 /* DurationChart.swift */; };
+		F228A4C828E831A0007EF4E3 /* EntryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F228A4C728E831A0007EF4E3 /* EntryListView.swift */; };
 		F262BC4223B73012006EE628 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F262BC4123B73012006EE628 /* AppDelegate.swift */; };
 		F262BC4423B73012006EE628 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F262BC4323B73012006EE628 /* SceneDelegate.swift */; };
 		F262BC4623B73012006EE628 /* OutsideDurationOverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F262BC4523B73012006EE628 /* OutsideDurationOverviewView.swift */; };
@@ -28,10 +31,13 @@
 
 /* Begin PBXFileReference section */
 		F207AC1C28E6CFBF0081EF64 /* IdentifiablePlace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentifiablePlace.swift; sourceTree = "<group>"; };
+		F207AC2028E7247C0081EF64 /* SQLighter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLighter.swift; sourceTree = "<group>"; };
 		F227EBFF23B8E80B007C6B2A /* RegionUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionUpdate.swift; sourceTree = "<group>"; };
 		F227EC0123B8E9C3007C6B2A /* UpdateType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateType.swift; sourceTree = "<group>"; };
 		F227EC0323B9FE2D007C6B2A /* FileManagerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerExtension.swift; sourceTree = "<group>"; };
 		F227EC0923BA6209007C6B2A /* DayEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayEntry.swift; sourceTree = "<group>"; };
+		F228A4C528E78751007EF4E3 /* DurationChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurationChart.swift; sourceTree = "<group>"; };
+		F228A4C728E831A0007EF4E3 /* EntryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryListView.swift; sourceTree = "<group>"; };
 		F262BC3E23B73012006EE628 /* IntoTheWild.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IntoTheWild.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F262BC4123B73012006EE628 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F262BC4323B73012006EE628 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -59,6 +65,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F228A4C928E831A7007EF4E3 /* EntryList */ = {
+			isa = PBXGroup;
+			children = (
+				F228A4C728E831A0007EF4E3 /* EntryListView.swift */,
+			);
+			path = EntryList;
+			sourceTree = "<group>";
+		};
 		F262BC3523B73012006EE628 = {
 			isa = PBXGroup;
 			children = (
@@ -83,6 +97,7 @@
 				F2A37FBC28DE493C00B4DAEF /* Views */,
 				F2A37FBB28DE492100B4DAEF /* Model */,
 				F227EC0323B9FE2D007C6B2A /* FileManagerExtension.swift */,
+				F207AC2028E7247C0081EF64 /* SQLighter.swift */,
 				F262BC4723B7301D006EE628 /* Assets.xcassets */,
 				F262BC4C23B7301D006EE628 /* LaunchScreen.storyboard */,
 				F262BC4F23B7301D006EE628 /* Info.plist */,
@@ -119,7 +134,9 @@
 				F262BC4523B73012006EE628 /* OutsideDurationOverviewView.swift */,
 				F27948CA285F133400DAF5E0 /* HeaderView.swift */,
 				F27948CC285F14B600DAF5E0 /* OutsideDurationChartView.swift */,
+				F228A4C528E78751007EF4E3 /* DurationChart.swift */,
 				F27948C8285C68FF00DAF5E0 /* NotMonitoringRegionView.swift */,
+				F228A4C928E831A7007EF4E3 /* EntryList */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -201,18 +218,21 @@
 			files = (
 				F2A029BB247910CE00E1C053 /* DayEntriesCalculator.swift in Sources */,
 				F27948CD285F14B600DAF5E0 /* OutsideDurationChartView.swift in Sources */,
+				F207AC2228E744BC0081EF64 /* RegionUpdate.swift in Sources */,
 				F262BC4223B73012006EE628 /* AppDelegate.swift in Sources */,
 				F262BC5923B74C89006EE628 /* LocationProvider.swift in Sources */,
 				F227EC0423B9FE2D007C6B2A /* FileManagerExtension.swift in Sources */,
+				F228A4C628E78751007EF4E3 /* DurationChart.swift in Sources */,
 				F207AC1D28E6CFBF0081EF64 /* IdentifiablePlace.swift in Sources */,
 				F227EC0223B8E9C3007C6B2A /* UpdateType.swift in Sources */,
-				F227EC0023B8E80B007C6B2A /* RegionUpdate.swift in Sources */,
 				F227EC0A23BA6209007C6B2A /* DayEntry.swift in Sources */,
 				F27948CB285F133400DAF5E0 /* HeaderView.swift in Sources */,
 				F27948CF285F69B100DAF5E0 /* Coordinate.swift in Sources */,
 				F262BC4423B73012006EE628 /* SceneDelegate.swift in Sources */,
 				F27948C9285C68FF00DAF5E0 /* NotMonitoringRegionView.swift in Sources */,
+				F228A4C828E831A0007EF4E3 /* EntryListView.swift in Sources */,
 				F262BC4623B73012006EE628 /* OutsideDurationOverviewView.swift in Sources */,
+				F207AC2128E7247C0081EF64 /* SQLighter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -351,7 +371,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"IntoTheWild/Preview Content\"";
 				DEVELOPMENT_TEAM = Q6PD97MRX4;
 				ENABLE_PREVIEWS = YES;
@@ -376,7 +396,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"IntoTheWild/Preview Content\"";
 				DEVELOPMENT_TEAM = Q6PD97MRX4;
 				ENABLE_PREVIEWS = YES;

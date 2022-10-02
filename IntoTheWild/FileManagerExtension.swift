@@ -18,6 +18,10 @@ extension FileManager {
     return documentsURL().appendingPathComponent("region_updates.json")
   }
 
+  static func regionUpdatesSQLitePath() -> URL {
+    return documentsURL().appendingPathComponent("region_updates.sqlite")
+  }
+
   static func homeCoordinateURL() -> URL {
     return documentsURL().appendingPathComponent("home.json")
   }
