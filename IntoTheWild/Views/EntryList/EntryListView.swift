@@ -32,9 +32,17 @@ struct EntryListView: View {
         List {
           ForEach(locationProvider.regionUpdates.reversed()) { update in
             HStack {
-              Text(update.date.formatted())
+              HStack {
+//                Text("\(update.id ?? 0)")
+                Text(update.date.formatted())
+              }
               Spacer()
-              Text(update.updateTypeRaw)
+              HStack {
+                Text(update.updateTypeRaw)
+                if let regionName = update.regionName {
+                  Text(regionName)
+                }
+              }
             }
           }
         }

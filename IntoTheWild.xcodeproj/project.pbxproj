@@ -3,18 +3,20 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		F207AC1D28E6CFBF0081EF64 /* IdentifiablePlace.swift in Sources */ = {isa = PBXBuildFile; fileRef = F207AC1C28E6CFBF0081EF64 /* IdentifiablePlace.swift */; };
 		F207AC2128E7247C0081EF64 /* SQLighter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F207AC2028E7247C0081EF64 /* SQLighter.swift */; };
-		F207AC2228E744BC0081EF64 /* RegionUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F227EBFF23B8E80B007C6B2A /* RegionUpdate.swift */; };
+		F207AC2228E744BC0081EF64 /* RegionUpdateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F227EBFF23B8E80B007C6B2A /* RegionUpdateExtension.swift */; };
 		F227EC0223B8E9C3007C6B2A /* UpdateType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F227EC0123B8E9C3007C6B2A /* UpdateType.swift */; };
 		F227EC0423B9FE2D007C6B2A /* FileManagerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F227EC0323B9FE2D007C6B2A /* FileManagerExtension.swift */; };
 		F227EC0A23BA6209007C6B2A /* DayEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = F227EC0923BA6209007C6B2A /* DayEntry.swift */; };
 		F228A4C628E78751007EF4E3 /* DurationChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = F228A4C528E78751007EF4E3 /* DurationChart.swift */; };
 		F228A4C828E831A0007EF4E3 /* EntryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F228A4C728E831A0007EF4E3 /* EntryListView.swift */; };
+		F228A4D828E96ECA007EF4E3 /* DayEntriesCalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F228A4D728E96ECA007EF4E3 /* DayEntriesCalculatorTests.swift */; };
+		F228A4DB28EAD356007EF4E3 /* Lighter in Frameworks */ = {isa = PBXBuildFile; productRef = F228A4DA28EAD356007EF4E3 /* Lighter */; };
 		F262BC4223B73012006EE628 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F262BC4123B73012006EE628 /* AppDelegate.swift */; };
 		F262BC4423B73012006EE628 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F262BC4323B73012006EE628 /* SceneDelegate.swift */; };
 		F262BC4623B73012006EE628 /* OutsideDurationOverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F262BC4523B73012006EE628 /* OutsideDurationOverviewView.swift */; };
@@ -29,15 +31,27 @@
 		F2A029BB247910CE00E1C053 /* DayEntriesCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2A029BA247910CE00E1C053 /* DayEntriesCalculator.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		F228A4D228E96EA3007EF4E3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F262BC3623B73012006EE628 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F262BC3D23B73012006EE628;
+			remoteInfo = IntoTheWild;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		F207AC1C28E6CFBF0081EF64 /* IdentifiablePlace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentifiablePlace.swift; sourceTree = "<group>"; };
 		F207AC2028E7247C0081EF64 /* SQLighter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLighter.swift; sourceTree = "<group>"; };
-		F227EBFF23B8E80B007C6B2A /* RegionUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionUpdate.swift; sourceTree = "<group>"; };
+		F227EBFF23B8E80B007C6B2A /* RegionUpdateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionUpdateExtension.swift; sourceTree = "<group>"; };
 		F227EC0123B8E9C3007C6B2A /* UpdateType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateType.swift; sourceTree = "<group>"; };
 		F227EC0323B9FE2D007C6B2A /* FileManagerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerExtension.swift; sourceTree = "<group>"; };
 		F227EC0923BA6209007C6B2A /* DayEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayEntry.swift; sourceTree = "<group>"; };
 		F228A4C528E78751007EF4E3 /* DurationChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurationChart.swift; sourceTree = "<group>"; };
 		F228A4C728E831A0007EF4E3 /* EntryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryListView.swift; sourceTree = "<group>"; };
+		F228A4CE28E96EA3007EF4E3 /* IntoTheWildTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IntoTheWildTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F228A4D728E96ECA007EF4E3 /* DayEntriesCalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayEntriesCalculatorTests.swift; sourceTree = "<group>"; };
 		F262BC3E23B73012006EE628 /* IntoTheWild.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IntoTheWild.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F262BC4123B73012006EE628 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F262BC4323B73012006EE628 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -55,10 +69,18 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		F228A4CB28E96EA3007EF4E3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F262BC3B23B73012006EE628 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F228A4DB28EAD356007EF4E3 /* Lighter in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -73,10 +95,19 @@
 			path = EntryList;
 			sourceTree = "<group>";
 		};
+		F228A4CF28E96EA3007EF4E3 /* IntoTheWildTests */ = {
+			isa = PBXGroup;
+			children = (
+				F228A4D728E96ECA007EF4E3 /* DayEntriesCalculatorTests.swift */,
+			);
+			path = IntoTheWildTests;
+			sourceTree = "<group>";
+		};
 		F262BC3523B73012006EE628 = {
 			isa = PBXGroup;
 			children = (
 				F262BC4023B73012006EE628 /* IntoTheWild */,
+				F228A4CF28E96EA3007EF4E3 /* IntoTheWildTests */,
 				F262BC3F23B73012006EE628 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -85,6 +116,7 @@
 			isa = PBXGroup;
 			children = (
 				F262BC3E23B73012006EE628 /* IntoTheWild.app */,
+				F228A4CE28E96EA3007EF4E3 /* IntoTheWildTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -122,7 +154,7 @@
 				F27948CE285F69B100DAF5E0 /* Coordinate.swift */,
 				F2A029BA247910CE00E1C053 /* DayEntriesCalculator.swift */,
 				F227EC0923BA6209007C6B2A /* DayEntry.swift */,
-				F227EBFF23B8E80B007C6B2A /* RegionUpdate.swift */,
+				F227EBFF23B8E80B007C6B2A /* RegionUpdateExtension.swift */,
 				F227EC0123B8E9C3007C6B2A /* UpdateType.swift */,
 			);
 			path = Model;
@@ -144,6 +176,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		F228A4CD28E96EA3007EF4E3 /* IntoTheWildTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F228A4D428E96EA3007EF4E3 /* Build configuration list for PBXNativeTarget "IntoTheWildTests" */;
+			buildPhases = (
+				F228A4CA28E96EA3007EF4E3 /* Sources */,
+				F228A4CB28E96EA3007EF4E3 /* Frameworks */,
+				F228A4CC28E96EA3007EF4E3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F228A4D328E96EA3007EF4E3 /* PBXTargetDependency */,
+			);
+			name = IntoTheWildTests;
+			productName = IntoTheWildTests;
+			productReference = F228A4CE28E96EA3007EF4E3 /* IntoTheWildTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		F262BC3D23B73012006EE628 /* IntoTheWild */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = F262BC5223B7301D006EE628 /* Build configuration list for PBXNativeTarget "IntoTheWild" */;
@@ -158,6 +208,7 @@
 			);
 			name = IntoTheWild;
 			packageProductDependencies = (
+				F228A4DA28EAD356007EF4E3 /* Lighter */,
 			);
 			productName = IntoTheWild;
 			productReference = F262BC3E23B73012006EE628 /* IntoTheWild.app */;
@@ -169,10 +220,14 @@
 		F262BC3623B73012006EE628 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1130;
+				LastSwiftUpdateCheck = 1400;
 				LastUpgradeCheck = 1400;
 				ORGANIZATIONNAME = dasdom;
 				TargetAttributes = {
+					F228A4CD28E96EA3007EF4E3 = {
+						CreatedOnToolsVersion = 14.0;
+						TestTargetID = F262BC3D23B73012006EE628;
+					};
 					F262BC3D23B73012006EE628 = {
 						CreatedOnToolsVersion = 11.3;
 					};
@@ -188,17 +243,26 @@
 			);
 			mainGroup = F262BC3523B73012006EE628;
 			packageReferences = (
+				F228A4D928EAD356007EF4E3 /* XCRemoteSwiftPackageReference "Lighter" */,
 			);
 			productRefGroup = F262BC3F23B73012006EE628 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				F262BC3D23B73012006EE628 /* IntoTheWild */,
+				F228A4CD28E96EA3007EF4E3 /* IntoTheWildTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		F228A4CC28E96EA3007EF4E3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F262BC3C23B73012006EE628 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -212,13 +276,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		F228A4CA28E96EA3007EF4E3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F228A4D828E96ECA007EF4E3 /* DayEntriesCalculatorTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F262BC3A23B73012006EE628 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				F2A029BB247910CE00E1C053 /* DayEntriesCalculator.swift in Sources */,
 				F27948CD285F14B600DAF5E0 /* OutsideDurationChartView.swift in Sources */,
-				F207AC2228E744BC0081EF64 /* RegionUpdate.swift in Sources */,
+				F207AC2228E744BC0081EF64 /* RegionUpdateExtension.swift in Sources */,
 				F262BC4223B73012006EE628 /* AppDelegate.swift in Sources */,
 				F262BC5923B74C89006EE628 /* LocationProvider.swift in Sources */,
 				F227EC0423B9FE2D007C6B2A /* FileManagerExtension.swift in Sources */,
@@ -238,6 +310,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		F228A4D328E96EA3007EF4E3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F262BC3D23B73012006EE628 /* IntoTheWild */;
+			targetProxy = F228A4D228E96EA3007EF4E3 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		F262BC4C23B7301D006EE628 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -250,6 +330,46 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		F228A4D528E96EA3007EF4E3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Q6PD97MRX4;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = de.dasdom.IntoTheWildTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/IntoTheWild.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/IntoTheWild";
+			};
+			name = Debug;
+		};
+		F228A4D628E96EA3007EF4E3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Q6PD97MRX4;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = de.dasdom.IntoTheWildTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/IntoTheWild.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/IntoTheWild";
+			};
+			name = Release;
+		};
 		F262BC5023B7301D006EE628 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -371,7 +491,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"IntoTheWild/Preview Content\"";
 				DEVELOPMENT_TEAM = Q6PD97MRX4;
 				ENABLE_PREVIEWS = YES;
@@ -386,8 +506,11 @@
 				MARKETING_VERSION = 1;
 				PRODUCT_BUNDLE_IDENTIFIER = de.dasdom.beenoutside;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -396,7 +519,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"IntoTheWild/Preview Content\"";
 				DEVELOPMENT_TEAM = Q6PD97MRX4;
 				ENABLE_PREVIEWS = YES;
@@ -411,14 +534,26 @@
 				MARKETING_VERSION = 1;
 				PRODUCT_BUNDLE_IDENTIFIER = de.dasdom.beenoutside;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		F228A4D428E96EA3007EF4E3 /* Build configuration list for PBXNativeTarget "IntoTheWildTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F228A4D528E96EA3007EF4E3 /* Debug */,
+				F228A4D628E96EA3007EF4E3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		F262BC3923B73012006EE628 /* Build configuration list for PBXProject "IntoTheWild" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -438,6 +573,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		F228A4D928EAD356007EF4E3 /* XCRemoteSwiftPackageReference "Lighter" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Lighter-swift/Lighter";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F228A4DA28EAD356007EF4E3 /* Lighter */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F228A4D928EAD356007EF4E3 /* XCRemoteSwiftPackageReference "Lighter" */;
+			productName = Lighter;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F262BC3623B73012006EE628 /* Project object */;
 }

@@ -39,7 +39,7 @@ struct DayEntriesCalculator {
     for i in 0..<numberOfDays {
       if let date = Calendar.current.date(byAdding: .day, value: -i, to: now) {
         let duration = durationFor(date: date, from: regionUpdates)
-        
+
         dayEntries.append(DayEntry(duration: duration,
                                    weekday: date,
                                    type: .outside))

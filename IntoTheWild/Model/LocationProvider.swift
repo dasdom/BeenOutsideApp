@@ -6,6 +6,7 @@ import UIKit
 import CoreLocation
 import MapKit
 import SQLite3
+import Lighter
 
 func date(year: Int, month: Int, day: Int = 1) -> Date {
   Calendar.current.date(from: DateComponents(year: year, month: month, day: day)) ?? Date()
@@ -15,7 +16,7 @@ class LocationProvider: NSObject,
                         CLLocationManagerDelegate,
                         ObservableObject {
 
-  var db : OpaquePointer?
+  var db: BeenOutside!
   @Published var wrongAuthorization = false
   @Published var coordinateRegion: MKCoordinateRegion? {
     didSet {
@@ -57,9 +58,9 @@ class LocationProvider: NSObject,
     }
   }
 
-  deinit {
-    sqlite3_close(db)
-  }
+//  deinit {
+//    sqlite3_close(db)
+//  }
 
   func locationManager(_ manager: CLLocationManager,
                        didChangeAuthorization status:
@@ -101,7 +102,7 @@ class LocationProvider: NSObject,
                        didEnterRegion region: CLRegion) {
     
     print("didEnterRegion: \(String(describing: region))")
-    addRegionUpdate(type: .enter)
+    addRegionUpdate(type: .enter, name: region.identifier)
   }
 
   func locationManager(_ manager: CLLocationManager,
@@ -109,33 +110,35 @@ class LocationProvider: NSObject,
     
     print("didExitRegion: \(String(describing: region))")
 
-    addRegionUpdate(type: .exit)
+    addRegionUpdate(type: .exit, name: region.identifier)
   }
 
-  func addRegionUpdate(type: UpdateType) {
+  func addRegionUpdate(type: UpdateType, name: String? = nil) {
 
-    let calendar = Calendar.current
+//    let calendar = Calendar.current
     let now = Date()
     
     let lastUpdateType = regionUpdates.last?.updateType
     if type != lastUpdateType {
-      if type == .enter, let lastUpdate = regionUpdates.last {
-        var beginningOfDuration: Date = lastUpdate.date
-        while false == calendar.isDate(beginningOfDuration, inSameDayAs: now) {
-          guard let nextDayAfterBeginningOfDuration = calendar.date(byAdding: .day, value: 1, to: beginningOfDuration) else {
-            break
-          }
-          let startOfNextDay = calendar.startOfDay(for: nextDayAfterBeginningOfDuration)
-          let enterUpdate = RegionUpdate(date: startOfNextDay, updateTypeRaw: UpdateType.enter.rawValue)
-          regionUpdates.append(enterUpdate)
-          let exitUpdate = RegionUpdate(date: startOfNextDay, updateTypeRaw: UpdateType.exit.rawValue)
-          regionUpdates.append(exitUpdate)
-          beginningOfDuration = startOfNextDay
-        }
-      }
-      var regionUpdate = RegionUpdate(date: now, updateTypeRaw: type.rawValue)
+//      if type == .enter, let lastUpdate = regionUpdates.last {
+//        var beginningOfDuration: Date = lastUpdate.date
+//        while false == calendar.isDate(beginningOfDuration, inSameDayAs: now) {
+//          guard let nextDayAfterBeginningOfDuration = calendar.date(byAdding: .day, value: 1, to: beginningOfDuration) else {
+//            break
+//          }
+//          let startOfNextDay = calendar.startOfDay(for: nextDayAfterBeginningOfDuration)
+//          let enterUpdate = RegionUpdate(date: startOfNextDay, updateTypeRaw: UpdateType.enter.rawValue)
+//          regionUpdates.append(enterUpdate)
+//          let exitUpdate = RegionUpdate(date: startOfNextDay, updateTypeRaw: UpdateType.exit.rawValue)
+//          regionUpdates.append(exitUpdate)
+//          beginningOfDuration = startOfNextDay
+//        }
+//      }
+      let id = (regionUpdates.last?.id ?? 0) + 1
+      let regionUpdate = RegionUpdate(id: id, date: now, updateTypeRaw: type.rawValue, regionName: name)
       regionUpdates.append(regionUpdate)
-      regionUpdate.insert(into: db)
+//      regionUpdate.insert(into: db)
+      _ = try? db.insert(regionUpdate)
 
       writeRegionUpdates()
     }
@@ -158,27 +161,30 @@ class LocationProvider: NSObject,
 
   func loadRegionUpdates() {
     let sqliteURL = FileManager.regionUpdatesSQLitePath()
-    let path = sqliteURL.path
-    if FileManager.default.fileExists(atPath: path) {
-      sqlite3_open_v2(path, &db, SQLITE_OPEN_READWRITE, nil)
-      regionUpdates = RegionUpdate.fetch(from: db, orderBy: "date") ?? []
-    } else {
-      let rc = BeenOutside.create(sqliteURL.path, in: &db)
-      if rc != SQLITE_OK {
-        print("\(#filePath), \(#line): Could not create db.")
-      }
-      do {
-        let data = try Data(contentsOf: FileManager.regionUpdatesDataPath())
-        regionUpdates = try JSONDecoder().decode([RegionUpdate].self,
-                                                 from: data)
-        for regionUpdate in regionUpdates {
-          var mutableRegionUpdate = regionUpdate
-          mutableRegionUpdate.insert(into: db)
-        }
-      } catch {
-        print("error: \(error)")
+//    let path = sqliteURL.path
+    db = BeenOutside(url: sqliteURL)
+    let fileVersion = (try? db.get(pragma: "user_version", as: Int.self)) ?? 0
+    if BeenOutside.userVersion > fileVersion {
+      switch fileVersion {
+        case 0:
+          do {
+            try db.execute("ALTER TABLE region_update ADD COLUMN region_name TEXT NULL")
+            try db.execute("PRAGMA user_version = 1")
+          } catch {
+            print("\(#filePath), \(#line): \(error)")
+          }
+          fallthrough
+        default:
+          break
       }
     }
+    do {
+      regionUpdates = try db.regionUpdates.fetch()
+    } catch {
+      regionUpdates = []
+    }
+//      sqlite3_open_v2(path, &db, SQLITE_OPEN_READWRITE, nil)
+//      regionUpdates = RegionUpdate.fetch(from: db, orderBy: "date") ?? []
   }
 
   func writeHome(coordinate: Coordinate) {

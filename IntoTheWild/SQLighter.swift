@@ -1,5 +1,6 @@
 import SQLite3
 import Foundation
+import Lighter
 
 /**
  * A structure representing a SQLite database.
@@ -16,6 +17,32 @@ import Foundation
  * >       to create Swift types that represent common queries.
  * >       (E.g. joins between tables or fragments of table data.)
  *
+ * ### Examples
+ *
+ * Perform record operations on ``RegionUpdate`` records:
+ * ```swift
+ * let records = try await db.regionUpdates.filter(orderBy: \.updateTypeRaw) {
+ *   $0.updateTypeRaw != nil
+ * }
+ *
+ * try await db.transaction { tx in
+ *   var record = try tx.regionUpdates.find(2) // find by primaryKey
+ *
+ *   record.updateTypeRaw = "Hunt"
+ *   try tx.update(record)
+ *
+ *   let newRecord = try tx.insert(record)
+ *   try tx.delete(newRecord)
+ * }
+ * ```
+ *
+ * Perform column selects on the `region_update` table:
+ * ```swift
+ * let values = try await db.select(from: \.regionUpdates, \.updateTypeRaw) {
+ *   $0.in([ 2, 3 ])
+ * }
+ * ```
+ *
  * Perform low level operations on ``RegionUpdate`` records:
  * ```swift
  * var db : OpaquePointer?
@@ -31,56 +58,56 @@ import Foundation
  * records[0].insert(db) // re-add
  * ```
  */
-public struct BeenOutside {
+@dynamicMemberLookup
+public struct BeenOutside : SQLDatabase, SQLDatabaseAsyncChangeOperations, SQLCreationStatementsHolder {
 
   /**
-   * A SQLError that can be used with SQLite
+   * Mappings of table/view Swift types to their "reference name".
    *
-   * Setup from SQLite3 database handle
-   * ```swift
-   * if rc != SQLITE_OK { throw SQLError(dbHandle) }
-   * ```
+   * The `RecordTypes` structure contains a variable for the Swift type
+   * associated each table/view of the database. It maps the tables
+   * "reference names" (e.g. ``regionUpdates``) to the
+   * "record type" of the table (e.g. ``RegionUpdate``.self).
    */
-  public struct SQLError : Swift.Error, Equatable {
+  public struct RecordTypes {
 
-    /// The SQLite3 error code (`sqlite3_errcode`).
-    public let code : Int32
-
-    /// The SQLite3 error message (`sqlite3_errmsg`).
-    public let message : String?
-
-    public init(_ code: Int32, _ message: UnsafePointer<CChar>? = nil)
-    {
-      self.code    = code
-      self.message = message.flatMap(String.init(cString:))
-    }
-
-    public init(_ db: OpaquePointer!)
-    {
-      self.code    = sqlite3_errcode(db)
-      self.message = sqlite3_errmsg(db).flatMap(String.init(cString:))
-    }
+    /// Returns the RegionUpdate type information (SQL: `region_update`).
+    public let regionUpdates = RegionUpdate.self
   }
 
+  /// Property based access to the ``RecordTypes-swift.struct``.
+  public static let recordTypes = RecordTypes()
+
+#if swift(>=5.7)
+  /// All RecordTypes defined in the database.
+  public static let _allRecordTypes : [ any SQLRecord.Type ] = [ RegionUpdate.self ]
+#endif // swift(>=5.7)
+
   /// User version of the database (`PRAGMA user_version`).
-  public static var userVersion = 0
+  public static var userVersion = 1
 
   /// Whether `INSERT … RETURNING` should be used (requires SQLite 3.35.0+).
   public static var useInsertReturning = sqlite3_libversion_number() >= 3035000
 
   /// The `DateFormatter` used for parsing string date values.
-  public static var dateFormatter : DateFormatter? = {
-    let formatter = DateFormatter()
-    formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-    formatter.locale = Locale(identifier: "en_US_POSIX")
-    return formatter
-  }()
+  static var _dateFormatter : DateFormatter?
+
+  /// The `DateFormatter` used for parsing string date values.
+  public static var dateFormatter : DateFormatter? {
+    set {
+      _dateFormatter = newValue
+    }
+    get {
+      _dateFormatter ?? Date.defaultSQLiteDateFormatter
+    }
+  }
 
   /// SQL that can be used to recreate the database structure.
   @inlinable
   public static var creationSQL : String {
     var sql = ""
     sql.append(RegionUpdate.Schema.create)
+    sql.append(#"PRAGMA user_version = 1);"#)
     return sql
   }
 
@@ -136,6 +163,64 @@ public struct BeenOutside {
     if let s = s { return try s.withCString(body) }
     else { return try body(nil) }
   }
+
+  /// The `connectionHandler` is used to open SQLite database connections.
+  public var connectionHandler : SQLConnectionHandler
+
+  /**
+   * Initialize ``BeenOutside`` with a `URL`.
+   *
+   * Configures the database with a simple connection pool opening the
+   * specified `URL`.
+   * And optional `readOnly` flag can be set (defaults to `false`).
+   *
+   * Example:
+   * ```swift
+   * let db = BeenOutside(url: ...)
+   *
+   * // Write operations will raise an error.
+   * let readOnly = BeenOutside(
+   *   url: Bundle.module.url(forResource: "samples", withExtension: "db"),
+   *   readOnly: true
+   * )
+   * ```
+   *
+   * - Parameters:
+   *   - url: A `URL` pointing to the database to be used.
+   *   - readOnly: Whether the database should be opened readonly (default: `false`).
+   */
+  @inlinable
+  public init(url: URL, readOnly: Bool = false)
+  {
+    self.connectionHandler = .simplePool(url: url, readOnly: readOnly)
+  }
+
+  /**
+   * Initialize ``BeenOutside`` w/ a `SQLConnectionHandler`.
+   *
+   * `SQLConnectionHandler`'s are used to open SQLite database connections when
+   * queries are run using the `Lighter` APIs.
+   * The `SQLConnectionHandler` is a protocol and custom handlers
+   * can be provided.
+   *
+   * Example:
+   * ```swift
+   * let db = BeenOutside(connectionHandler: .simplePool(
+   *   url: Bundle.module.url(forResource: "samples", withExtension: "db"),
+   *   readOnly: true,
+   *   maxAge: 10,
+   *   maximumPoolSizePerConfiguration: 4
+   * ))
+   * ```
+   *
+   * - Parameters:
+   *   - connectionHandler: The `SQLConnectionHandler` to use w/ the database.
+   */
+  @inlinable
+  public init(connectionHandler: SQLConnectionHandler)
+  {
+    self.connectionHandler = connectionHandler
+  }
 }
 
 /**
@@ -144,6 +229,32 @@ public struct BeenOutside {
  * Record types represent rows within tables&views in a SQLite database.
  * They are returned by the functions or queries/filters generated by
  * Enlighter.
+ *
+ * ### Examples
+ *
+ * Perform record operations on ``RegionUpdate`` records:
+ * ```swift
+ * let records = try await db.regionUpdates.filter(orderBy: \.updateTypeRaw) {
+ *   $0.updateTypeRaw != nil
+ * }
+ *
+ * try await db.transaction { tx in
+ *   var record = try tx.regionUpdates.find(2) // find by primaryKey
+ *
+ *   record.updateTypeRaw = "Hunt"
+ *   try tx.update(record)
+ *
+ *   let newRecord = try tx.insert(record)
+ *   try tx.delete(newRecord)
+ * }
+ * ```
+ *
+ * Perform column selects on the `region_update` table:
+ * ```swift
+ * let values = try await db.select(from: \.regionUpdates, \.updateTypeRaw) {
+ *   $0.in([ 2, 3 ])
+ * }
+ * ```
  *
  * Perform low level operations on ``RegionUpdate`` records:
  * ```swift
@@ -160,7 +271,7 @@ public struct BeenOutside {
  * records[0].insert(db) // re-add
  * ```
  */
-public struct RegionUpdate : Identifiable, Hashable, Codable {
+public struct RegionUpdate : Identifiable, SQLKeyedTableRecord, Codable {
 
   /// Static SQL type information for the ``RegionUpdate`` record.
   public static let schema = Schema()
@@ -174,6 +285,9 @@ public struct RegionUpdate : Identifiable, Hashable, Codable {
   /// Column `update_type_raw` (`TEXT`), required (has default).
   public var updateTypeRaw : String
 
+  /// Column `region_name` (`TEXT`), optional (default: `nil`).
+  public var regionName : String?
+
   /**
    * Initialize a new ``RegionUpdate`` record.
    *
@@ -181,13 +295,20 @@ public struct RegionUpdate : Identifiable, Hashable, Codable {
    *   - id: Primary key `region_update_id` (`INTEGER`), optional (default: `nil`).
    *   - date: Column `date` (`DATETIME`), required (has default).
    *   - updateTypeRaw: Column `update_type_raw` (`TEXT`), required (has default).
+   *   - regionName: Column `region_name` (`TEXT`), optional (default: `nil`).
    */
   @inlinable
-  public init(id: Int? = nil, date: Date, updateTypeRaw: String)
+  public init(
+    id: Int? = nil,
+    date: Date,
+    updateTypeRaw: String,
+    regionName: String? = nil
+  )
   {
     self.id = id
     self.date = date
     self.updateTypeRaw = updateTypeRaw
+    self.regionName = regionName
   }
 }
 
@@ -464,9 +585,9 @@ public extension RegionUpdate {
    * record.
    * It is used for static type lookups and more.
    */
-  struct Schema {
+  struct Schema : SQLKeyedTableSchema, SQLSwiftMatchableSchema, SQLCreatableSchema {
 
-    public typealias PropertyIndices = ( idx_id: Int32, idx_date: Int32, idx_updateTypeRaw: Int32 )
+    public typealias PropertyIndices = ( idx_id: Int32, idx_date: Int32, idx_updateTypeRaw: Int32, idx_regionName: Int32 )
     public typealias RecordType = RegionUpdate
     public typealias MatchClosureType = ( RegionUpdate ) -> Bool
 
@@ -474,7 +595,14 @@ public extension RegionUpdate {
     public static let externalName = "region_update"
 
     /// The number of columns the `region_update` table has.
-    public static let columnCount : Int32 = 3
+    public static let columnCount : Int32 = 4
+
+    /// Information on the records primary key (``RegionUpdate/id``).
+    public static let primaryKeyColumn = MappedColumn<RegionUpdate, Int?>(
+      externalName: "region_update_id",
+      defaultValue: nil,
+      keyPath: \RegionUpdate.id
+    )
 
     /// The SQL used to create the `region_update` table.
     public static let create =
@@ -483,42 +611,43 @@ public extension RegionUpdate {
         region_update_id INTEGER PRIMARY KEY,
 
         date DATETIME NOT NULL,
-        update_type_raw TEXT NOT NULL
+        update_type_raw TEXT NOT NULL,
+        region_name Text
       );
       """#
 
     /// SQL to `SELECT` all columns of the `region_update` table.
-    public static let select = #"SELECT "region_update_id", "date", "update_type_raw" FROM "region_update""#
+    public static let select = #"SELECT "region_update_id", "date", "update_type_raw", "region_name" FROM "region_update""#
 
     /// SQL fragment representing all columns.
-    public static let selectColumns = #""region_update_id", "date", "update_type_raw""#
+    public static let selectColumns = #""region_update_id", "date", "update_type_raw", "region_name""#
 
     /// Index positions of the properties in ``selectColumns``.
-    public static let selectColumnIndices : PropertyIndices = ( 0, 1, 2 )
+    public static let selectColumnIndices : PropertyIndices = ( 0, 1, 2, 3 )
 
     /// SQL to `SELECT` all columns of the `region_update` table using a Swift filter.
-    public static let matchSelect = #"SELECT "region_update_id", "date", "update_type_raw" FROM "region_update" WHERE regionUpdates_swift_match("region_update_id", "date", "update_type_raw") != 0"#
+    public static let matchSelect = #"SELECT "region_update_id", "date", "update_type_raw", "region_name" FROM "region_update" WHERE regionUpdates_swift_match("region_update_id", "date", "update_type_raw", "region_name") != 0"#
 
     /// SQL to `UPDATE` all columns of the `region_update` table.
-    public static let update = #"UPDATE "region_update" SET "date" = ?, "update_type_raw" = ? WHERE "region_update_id" = ?"#
+    public static let update = #"UPDATE "region_update" SET "date" = ?, "update_type_raw" = ?, "region_name" = ? WHERE "region_update_id" = ?"#
 
     /// Property parameter indicies in the ``update`` SQL
-    public static let updateParameterIndices : PropertyIndices = ( 3, 1, 2 )
+    public static let updateParameterIndices : PropertyIndices = ( 4, 1, 2, 3 )
 
     /// SQL to `INSERT` a record into the `region_update` table.
-    public static let insert = #"INSERT INTO "region_update" ( "date", "update_type_raw" ) VALUES ( ?, ? )"#
+    public static let insert = #"INSERT INTO "region_update" ( "date", "update_type_raw", "region_name" ) VALUES ( ?, ?, ? )"#
 
     /// SQL to `INSERT` a record into the `region_update` table.
-    public static let insertReturning = #"INSERT INTO "region_update" ( "date", "update_type_raw" ) VALUES ( ?, ? ) RETURNING "region_update_id", "date", "update_type_raw""#
+    public static let insertReturning = #"INSERT INTO "region_update" ( "date", "update_type_raw", "region_name" ) VALUES ( ?, ?, ? ) RETURNING "region_update_id", "date", "update_type_raw", "region_name""#
 
     /// Property parameter indicies in the ``insert`` SQL
-    public static let insertParameterIndices : PropertyIndices = ( -1, 1, 2 )
+    public static let insertParameterIndices : PropertyIndices = ( -1, 1, 2, 3 )
 
     /// SQL to `DELETE` a record from the `region_update` table.
     public static let delete = #"DELETE FROM "region_update" WHERE "region_update_id" = ?"#
 
     /// Property parameter indicies in the ``delete`` SQL
-    public static let deleteParameterIndices : PropertyIndices = ( 1, -1, -1 )
+    public static let deleteParameterIndices : PropertyIndices = ( 1, -1, -1, -1 )
 
     /**
      * Lookup property indices by column name in a statement handle.
@@ -539,7 +668,7 @@ public extension RegionUpdate {
     public static func lookupColumnIndices(`in` statement: OpaquePointer!)
     -> PropertyIndices
     {
-      var indices : PropertyIndices = ( -1, -1, -1 )
+      var indices : PropertyIndices = ( -1, -1, -1, -1 )
       for i in 0..<sqlite3_column_count(statement) {
         let col = sqlite3_column_name(statement, i)
         if strcmp(col!, "region_update_id") == 0 {
@@ -550,6 +679,9 @@ public extension RegionUpdate {
         }
         else if strcmp(col!, "update_type_raw") == 0 {
           indices.idx_updateTypeRaw = i
+        }
+        else if strcmp(col!, "region_name") == 0 {
+          indices.idx_regionName = i
         }
       }
       return indices
@@ -585,9 +717,10 @@ public extension RegionUpdate {
           let closurePtr = closureRawPtr.bindMemory(to: MatchClosureType.self, capacity: 1)
           let indices = RegionUpdate.Schema.selectColumnIndices
           let record = RegionUpdate(
-            id: (indices.idx_id >= 0) && (indices.idx_id < argc) ? (sqlite3_value_type(argv[Int(indices.idx_id)]) != SQLITE_NULL ? Int(sqlite3_value_int64(argv[Int(indices.idx_id)])) : nil) : nil,
-            date: ((indices.idx_date >= 0) && (indices.idx_date < argc) && (sqlite3_value_type(argv[Int(indices.idx_date)]) != SQLITE_NULL) ? (sqlite3_value_type(argv[Int(indices.idx_date)]) == SQLITE_TEXT ? (sqlite3_value_text(argv[Int(indices.idx_date)]).flatMap({ BeenOutside.dateFormatter?.date(from: String(cString: $0)) })) : Date(timeIntervalSince1970: sqlite3_value_double(argv[Int(indices.idx_date)]))) : nil) ?? Date(timeIntervalSince1970: 0),
-            updateTypeRaw: ((indices.idx_updateTypeRaw >= 0) && (indices.idx_updateTypeRaw < argc) ? (sqlite3_value_text(argv[Int(indices.idx_updateTypeRaw)]).flatMap(String.init(cString:))) : nil) ?? ""
+            id: (indices.idx_id >= 0) && (indices.idx_id < argc) ? (sqlite3_value_type(argv[Int(indices.idx_id)]) != SQLITE_NULL ? Int(sqlite3_value_int64(argv[Int(indices.idx_id)])) : nil) : RecordType.schema.id.defaultValue,
+            date: ((indices.idx_date >= 0) && (indices.idx_date < argc) && (sqlite3_value_type(argv[Int(indices.idx_date)]) != SQLITE_NULL) ? (sqlite3_value_type(argv[Int(indices.idx_date)]) == SQLITE_TEXT ? (sqlite3_value_text(argv[Int(indices.idx_date)]).flatMap({ BeenOutside.dateFormatter?.date(from: String(cString: $0)) })) : Date(timeIntervalSince1970: sqlite3_value_double(argv[Int(indices.idx_date)]))) : nil) ?? RecordType.schema.date.defaultValue,
+            updateTypeRaw: ((indices.idx_updateTypeRaw >= 0) && (indices.idx_updateTypeRaw < argc) ? (sqlite3_value_text(argv[Int(indices.idx_updateTypeRaw)]).flatMap(String.init(cString:))) : nil) ?? RecordType.schema.updateTypeRaw.defaultValue,
+            regionName: (indices.idx_regionName >= 0) && (indices.idx_regionName < argc) ? (sqlite3_value_text(argv[Int(indices.idx_regionName)]).flatMap(String.init(cString:))) : RecordType.schema.regionName.defaultValue
           )
           sqlite3_result_int(context, closurePtr.pointee(record) ? 1 : 0)
         }
@@ -636,6 +769,38 @@ public extension RegionUpdate {
         nil
       )
     }
+
+    /// Type information for property ``RegionUpdate/id`` (`region_update_id` column).
+    public let id = MappedColumn<RegionUpdate, Int?>(
+      externalName: "region_update_id",
+      defaultValue: nil,
+      keyPath: \RegionUpdate.id
+    )
+
+    /// Type information for property ``RegionUpdate/date`` (`date` column).
+    public let date = MappedColumn<RegionUpdate, Date>(
+      externalName: "date",
+      defaultValue: Date(timeIntervalSince1970: 0),
+      keyPath: \RegionUpdate.date
+    )
+
+    /// Type information for property ``RegionUpdate/updateTypeRaw`` (`update_type_raw` column).
+    public let updateTypeRaw = MappedColumn<RegionUpdate, String>(
+      externalName: "update_type_raw",
+      defaultValue: "",
+      keyPath: \RegionUpdate.updateTypeRaw
+    )
+
+    /// Type information for property ``RegionUpdate/regionName`` (`region_name` column).
+    public let regionName = MappedColumn<RegionUpdate, String?>(
+      externalName: "region_name",
+      defaultValue: nil,
+      keyPath: \RegionUpdate.regionName
+    )
+
+#if swift(>=5.7)
+    public var _allColumns : [ any SQLColumn ] { [ id, date, updateTypeRaw, regionName ] }
+#endif // swift(>=5.7)
   }
 
   /**
@@ -676,9 +841,10 @@ public extension RegionUpdate {
     let indices = indices ?? Self.Schema.lookupColumnIndices(in: statement)
     let argc = sqlite3_column_count(statement)
     self.init(
-      id: (indices.idx_id >= 0) && (indices.idx_id < argc) ? (sqlite3_column_type(statement, indices.idx_id) != SQLITE_NULL ? Int(sqlite3_column_int64(statement, indices.idx_id)) : nil) : nil,
-      date: ((indices.idx_date >= 0) && (indices.idx_date < argc) && (sqlite3_column_type(statement, indices.idx_date) != SQLITE_NULL) ? (sqlite3_column_type(statement, indices.idx_date) == SQLITE_TEXT ? (sqlite3_column_text(statement, indices.idx_date).flatMap({ BeenOutside.dateFormatter?.date(from: String(cString: $0)) })) : Date(timeIntervalSince1970: sqlite3_column_double(statement, indices.idx_date))) : nil) ?? Date(timeIntervalSince1970: 0),
-      updateTypeRaw: ((indices.idx_updateTypeRaw >= 0) && (indices.idx_updateTypeRaw < argc) ? (sqlite3_column_text(statement, indices.idx_updateTypeRaw).flatMap(String.init(cString:))) : nil) ?? ""
+      id: (indices.idx_id >= 0) && (indices.idx_id < argc) ? (sqlite3_column_type(statement, indices.idx_id) != SQLITE_NULL ? Int(sqlite3_column_int64(statement, indices.idx_id)) : nil) : Self.schema.id.defaultValue,
+      date: ((indices.idx_date >= 0) && (indices.idx_date < argc) && (sqlite3_column_type(statement, indices.idx_date) != SQLITE_NULL) ? (sqlite3_column_type(statement, indices.idx_date) == SQLITE_TEXT ? (sqlite3_column_text(statement, indices.idx_date).flatMap({ BeenOutside.dateFormatter?.date(from: String(cString: $0)) })) : Date(timeIntervalSince1970: sqlite3_column_double(statement, indices.idx_date))) : nil) ?? Self.schema.date.defaultValue,
+      updateTypeRaw: ((indices.idx_updateTypeRaw >= 0) && (indices.idx_updateTypeRaw < argc) ? (sqlite3_column_text(statement, indices.idx_updateTypeRaw).flatMap(String.init(cString:))) : nil) ?? Self.schema.updateTypeRaw.defaultValue,
+      regionName: (indices.idx_regionName >= 0) && (indices.idx_regionName < argc) ? (sqlite3_column_text(statement, indices.idx_regionName).flatMap(String.init(cString:))) : Self.schema.regionName.defaultValue
     )
   }
 
@@ -692,12 +858,12 @@ public extension RegionUpdate {
    * var statement : OpaquePointer?
    * sqlite3_prepare_v2(
    *   dbHandle,
-   *   #"UPDATE "region_update" SET "date" = ?, "update_type_raw" = ? WHERE "region_update_id" = ?"#,
+   *   #"UPDATE "region_update" SET "date" = ?, "update_type_raw" = ?, "region_name" = ? WHERE "region_update_id" = ?"#,
    *   -1, &statement, nil
    * )
    *
-   * let record = RegionUpdate(id: 1, date: ..., updateTypeRaw: "Hello")
-   * let ok = record.bind(to: statement, indices: ( 3, 1, 2 )) {
+   * let record = RegionUpdate(id: 1, date: ..., updateTypeRaw: "Hello", regionName: "World")
+   * let ok = record.bind(to: statement, indices: ( 4, 1, 2, 3 )) {
    *   sqlite3_step(statement) == SQLITE_DONE
    * }
    * sqlite3_finalize(statement)
@@ -732,7 +898,12 @@ public extension RegionUpdate {
       if indices.idx_updateTypeRaw >= 0 {
         sqlite3_bind_text(statement, indices.idx_updateTypeRaw, s, -1, nil)
       }
-      return try execute()
+      return try BeenOutside.withOptCString(regionName) { ( s ) in
+        if indices.idx_regionName >= 0 {
+          sqlite3_bind_text(statement, indices.idx_regionName, s, -1, nil)
+        }
+        return try execute()
+      }
     }
   }
 }
