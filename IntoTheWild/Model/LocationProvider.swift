@@ -138,7 +138,12 @@ class LocationProvider: NSObject,
       let regionUpdate = RegionUpdate(id: id, date: now, updateTypeRaw: type.rawValue, regionName: name)
       regionUpdates.append(regionUpdate)
 //      regionUpdate.insert(into: db)
-      _ = try? db.insert(regionUpdate)
+      do {
+        _ = try db.insert(regionUpdate)
+      } catch {
+        print("\(#filePath), \(#line): error: \(error)")
+
+      }
 
       writeRegionUpdates()
     }
@@ -162,22 +167,31 @@ class LocationProvider: NSObject,
   func loadRegionUpdates() {
     let sqliteURL = FileManager.regionUpdatesSQLitePath()
 //    let path = sqliteURL.path
-    db = BeenOutside(url: sqliteURL)
-    let fileVersion = (try? db.get(pragma: "user_version", as: Int.self)) ?? 0
-    if BeenOutside.userVersion > fileVersion {
-      switch fileVersion {
-        case 0:
-          do {
-            try db.execute("ALTER TABLE region_update ADD COLUMN region_name TEXT NULL")
-            try db.execute("PRAGMA user_version = 1")
-          } catch {
-            print("\(#filePath), \(#line): \(error)")
-          }
-          fallthrough
-        default:
-          break
-      }
+    do {
+      db = try BeenOutside.bootstrap(at: sqliteURL)
+    } catch {
+      print("\(#filePath), \(#line): error: \(error)")
     }
+//    let fileVersion: Int
+//    do {
+//      fileVersion = try db.get(pragma: "user_version", as: Int.self)
+//    } catch {
+//      fileVersion = 0
+//    }
+//    if BeenOutside.userVersion > fileVersion {
+//      switch fileVersion {
+//        case 0:
+//          do {
+//            try db.execute("ALTER TABLE region_update ADD COLUMN region_name TEXT NULL")
+//            try db.execute("PRAGMA user_version = 1")
+//          } catch {
+//            print("\(#filePath), \(#line): \(error)")
+//          }
+//          fallthrough
+//        default:
+//          break
+//      }
+//    }
     do {
       regionUpdates = try db.regionUpdates.fetch()
     } catch {

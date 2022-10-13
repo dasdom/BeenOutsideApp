@@ -13,23 +13,38 @@ struct DayEntriesCalculator {
 
   static func durationFor(date: Date, from regionUpdates: [RegionUpdate]) -> TimeInterval {
 
-      var duration = 0.0
-      var enter: RegionUpdate?
+    var duration = 0.0
+    var enter: RegionUpdate?
+    let calendar = Calendar.current
 
-      for regionUpdate in regionUpdates.reversed() {
-        if let unwrappedEnter = enter,
-           regionUpdate.updateType == .exit,
-           Calendar.current.isDate(date, inSameDayAs: regionUpdate.date) {
+    for regionUpdate in regionUpdates.reversed() {
+      if let unwrappedEnter = enter,
+         regionUpdate.updateType == .exit,
+         calendar.isDate(date, inSameDayAs: regionUpdate.date) {
 
+        if calendar.isDate(unwrappedEnter.date, inSameDayAs: regionUpdate.date) {
           duration += unwrappedEnter.date.timeIntervalSince(regionUpdate.date)
-          enter = nil
-        } else if regionUpdate.updateType == .enter {
-          enter = regionUpdate
+        } else if let startOfNextDay = calendar.date(byAdding: .day, value: 1, to: calendar.startOfDay(for: date)) {
+          duration += startOfNextDay.timeIntervalSince(regionUpdate.date)
         }
+        enter = nil
+      } else if regionUpdate.updateType == .enter {
+        enter = regionUpdate
       }
-
-      return duration
     }
+
+    let startOfDay = calendar.startOfDay(for: date)
+    if let enter = enter, enter.date.timeIntervalSince(startOfDay) > 0 {
+
+      if calendar.isDate(enter.date, inSameDayAs: startOfDay) {
+        duration += enter.date.timeIntervalSince(startOfDay)
+      } else if let startOfNextDay = calendar.date(byAdding: .day, value: 1, to: calendar.startOfDay(for: date)) {
+        duration += startOfNextDay.timeIntervalSince(startOfDay)
+      }
+    }
+
+    return duration
+  }
 
   static func dayEntries(from regionUpdates: [RegionUpdate], numberOfDays: Int) -> [DayEntry] {
     
@@ -43,9 +58,9 @@ struct DayEntriesCalculator {
         dayEntries.append(DayEntry(duration: duration,
                                    weekday: date,
                                    type: .outside))
-//        dayEntries.append(DayEntry(duration: 24.0 * 60 * 60 - duration,
-//                                   weekday: date,
-//                                   type: .home))
+        //        dayEntries.append(DayEntry(duration: 24.0 * 60 * 60 - duration,
+        //                                   weekday: date,
+        //                                   type: .home))
       }
     }
     
