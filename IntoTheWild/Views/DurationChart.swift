@@ -36,7 +36,7 @@ struct DurationChart: View {
           x: .value("Day", entry.weekday, unit: .day),
           y: .value("Duration", entry.duration / 3600)
         )
-//        .foregroundStyle(by: .value("Type", entry.type))
+        .foregroundStyle(by: .value("Type", entry.isCurrent ? "Current" : "Past" ))
       }
 
       RuleMark(y: .value("Average", locationProvider.average))

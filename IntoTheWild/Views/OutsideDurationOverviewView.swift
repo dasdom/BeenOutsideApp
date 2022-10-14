@@ -18,8 +18,12 @@ struct OutsideDurationOverviewView: View {
     NavigationStack {
       VStack {
         if let _ = locationProvider.coordinateRegion {
-
-          OutsideDurationChartView()
+          TimelineView(.everyMinute) { context in
+            OutsideDurationChartView()
+              .onChange(of: context.date) { (newValue: Date) in
+                locationProvider.updateValues()
+              }
+          }
 
           if let regionUpdate = locationProvider.regionUpdates.last {
             Text("Last \(regionUpdate.updateType.rawValue): \(regionUpdate.date.formatted(date: .abbreviated, time: .shortened))")

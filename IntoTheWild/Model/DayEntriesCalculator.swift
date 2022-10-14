@@ -57,20 +57,58 @@ struct DayEntriesCalculator {
     
     var dayEntries: [DayEntry] = []
     let now = Date()
-    
+
+    var regionUpdates = regionUpdates
+
+    var dateWithLastDuration: Date? = nil
     for i in 0..<numberOfDays {
       if let date = Calendar.current.date(byAdding: .day, value: -i, to: now) {
         let duration = durationFor(date: date, from: regionUpdates)
 
+        if duration > 0 {
+          dateWithLastDuration = date
+        }
+
         dayEntries.append(DayEntry(duration: duration,
                                    weekday: date,
                                    type: .outside))
-        //        dayEntries.append(DayEntry(duration: 24.0 * 60 * 60 - duration,
-        //                                   weekday: date,
-        //                                   type: .home))
+      }
+    }
+
+    var pastDayEntries = Array(dayEntries.reversed())
+
+    if let lastRegionUpdate = regionUpdates.last, lastRegionUpdate.updateType == .exit {
+      let id = lastRegionUpdate.id ?? 0
+      let regionUpdate = RegionUpdate(id: id + 1, date: now, updateTypeRaw: UpdateType.enter.rawValue)
+      regionUpdates.append(regionUpdate)
+
+      var currentDayEntries: [DayEntry] = []
+
+      for i in 0..<numberOfDays {
+        if let date = Calendar.current.date(byAdding: .day, value: -i, to: now), let dateWithLastDuration = dateWithLastDuration {
+          if date.timeIntervalSince(dateWithLastDuration) < 0 {
+            break
+          }
+          var duration = durationFor(date: date, from: regionUpdates)
+
+          if let dayEntry = dayEntries.first(where: { $0.weekday.timeIntervalSince(date) < 0.1 }) {
+            duration -= dayEntry.duration
+          }
+
+          if duration > 0.1 {
+            currentDayEntries.append(DayEntry(duration: duration,
+                                              weekday: date,
+                                              type: .outside,
+                                              isCurrent: true))
+          }
+        }
+      }
+
+      for currentDayEntry in currentDayEntries {
+        pastDayEntries.append(currentDayEntry)
       }
     }
     
-    return dayEntries.reversed()
+    return pastDayEntries
   }
 }
