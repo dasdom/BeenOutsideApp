@@ -18,6 +18,12 @@ class LocationProvider: NSObject,
 
   var db: BeenOutside!
   @Published var wrongAuthorization = false
+  @Published var location: CLLocation?
+  @Published var dayEntries: [DayEntry] = []
+  @Published var place: IdentifiablePlace = IdentifiablePlace(lat: 0, long: 0)
+  @Published var average: Double = 0
+  @Published var last28DaysTotal: Duration = .seconds(0)
+  @Published var regions: [MonitoredRegion] = []
   @Published var coordinateRegion: MKCoordinateRegion? {
     didSet {
       if let center = coordinateRegion?.center {
@@ -25,11 +31,6 @@ class LocationProvider: NSObject,
       }
     }
   }
-  @Published var dayEntries: [DayEntry] = []
-  @Published var place: IdentifiablePlace = IdentifiablePlace(lat: 0, long: 0)
-  @Published var average: Double = 0
-  @Published var last28DaysTotal: Duration = .seconds(0)
-  @Published var regions: [MonitoredRegion] = []
 
   let locationManager: CLLocationManager
   var numberOfDays: Int = 7 {
@@ -53,6 +54,7 @@ class LocationProvider: NSObject,
 
     locationManager.delegate = self
     locationManager.requestAlwaysAuthorization()
+    locationManager.distanceFilter = 1
 
     regions = locationManager.monitoredRegions.map({ clRegion in
       let circularRegion = clRegion as! CLCircularRegion
@@ -65,10 +67,6 @@ class LocationProvider: NSObject,
     }
   }
 
-//  deinit {
-//    sqlite3_close(db)
-//  }
-
   func locationManager(_ manager: CLLocationManager,
                        didChangeAuthorization status:
                        CLAuthorizationStatus) {
@@ -76,6 +74,7 @@ class LocationProvider: NSObject,
     switch status {
       case .authorizedAlways:
         print("success")
+        manager.startUpdatingLocation()
       case .notDetermined:
         print("notDetermined")
       default:
@@ -86,17 +85,11 @@ class LocationProvider: NSObject,
   func locationManager(_ manager: CLLocationManager,
                        didUpdateLocations locations: [CLLocation]) {
 
-    guard let location = locations.last else { return }
-    print("location: \(location)")
-    
-    let region = CLCircularRegion(center: location.coordinate,
-                                  radius: 10,
-                                  identifier: "home")
-    manager.startMonitoring(for: region)
+    guard let location = locations.last else {
+      return
+    }
 
-    coordinateRegion = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 100, longitudinalMeters: 100)
-
-    writeHome(coordinate: Coordinate(clCoordinate: location.coordinate))
+    self.location = location
   }
 
   func locationManager(_ manager: CLLocationManager,
@@ -122,90 +115,47 @@ class LocationProvider: NSObject,
 
   func addRegionUpdate(type: UpdateType, name: String? = nil) {
 
-//    let calendar = Calendar.current
     let now = Date()
     
     let lastUpdateType = regionUpdates.last?.updateType
     if type != lastUpdateType {
-//      if type == .enter, let lastUpdate = regionUpdates.last {
-//        var beginningOfDuration: Date = lastUpdate.date
-//        while false == calendar.isDate(beginningOfDuration, inSameDayAs: now) {
-//          guard let nextDayAfterBeginningOfDuration = calendar.date(byAdding: .day, value: 1, to: beginningOfDuration) else {
-//            break
-//          }
-//          let startOfNextDay = calendar.startOfDay(for: nextDayAfterBeginningOfDuration)
-//          let enterUpdate = RegionUpdate(date: startOfNextDay, updateTypeRaw: UpdateType.enter.rawValue)
-//          regionUpdates.append(enterUpdate)
-//          let exitUpdate = RegionUpdate(date: startOfNextDay, updateTypeRaw: UpdateType.exit.rawValue)
-//          regionUpdates.append(exitUpdate)
-//          beginningOfDuration = startOfNextDay
-//        }
-//      }
       let id = (regionUpdates.last?.id ?? 0) + 1
       let regionUpdate = RegionUpdate(id: id, date: now, updateTypeRaw: type.rawValue, regionName: name)
       regionUpdates.append(regionUpdate)
-//      regionUpdate.insert(into: db)
       do {
         _ = try db.insert(regionUpdate)
       } catch {
         print("\(#filePath), \(#line): error: \(error)")
 
       }
-
-      writeRegionUpdates()
     }
   }
 
   func setHome() {
-    locationManager.requestLocation()
-  }
+    if let location = location {
+      let region = CLCircularRegion(center: location.coordinate,
+                                    radius: 10,
+                                    identifier: "home")
+      locationManager.startMonitoring(for: region)
 
-  func writeRegionUpdates() {
-//    sqlite3_close(db)
-//    do {
-//      let data = try JSONEncoder().encode(regionUpdates)
-//      try data.write(to: FileManager.regionUpdatesDataPath(),
-//                     options: .atomic)
-//    } catch {
-//      print("error: \(error)")
-//    }
+      coordinateRegion = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 100, longitudinalMeters: 100)
+
+      writeHome(coordinate: Coordinate(clCoordinate: location.coordinate))
+    }
   }
 
   func loadRegionUpdates() {
     let sqliteURL = FileManager.regionUpdatesSQLitePath()
-//    let path = sqliteURL.path
     do {
       db = try BeenOutside.bootstrap(at: sqliteURL)
     } catch {
       print("\(#filePath), \(#line): error: \(error)")
     }
-//    let fileVersion: Int
-//    do {
-//      fileVersion = try db.get(pragma: "user_version", as: Int.self)
-//    } catch {
-//      fileVersion = 0
-//    }
-//    if BeenOutside.userVersion > fileVersion {
-//      switch fileVersion {
-//        case 0:
-//          do {
-//            try db.execute("ALTER TABLE region_update ADD COLUMN region_name TEXT NULL")
-//            try db.execute("PRAGMA user_version = 1")
-//          } catch {
-//            print("\(#filePath), \(#line): \(error)")
-//          }
-//          fallthrough
-//        default:
-//          break
-//      }
-//    }
     do {
       regionUpdates = try db.regionUpdates.fetch()
     } catch {
       regionUpdates = []
     }
-//      sqlite3_open_v2(path, &db, SQLITE_OPEN_READWRITE, nil)
-//      regionUpdates = RegionUpdate.fetch(from: db, orderBy: "date") ?? []
   }
 
   func writeHome(coordinate: Coordinate) {

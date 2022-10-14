@@ -9,7 +9,7 @@ struct OutsideDurationChartView: View {
 
   @EnvironmentObject private var locationProvider: LocationProvider
   @State private var selectedTimeFrame = 0
-  @State private var selectedElement: DayEntry? = nil
+  @State private var selectedElements: [DayEntry] = []
 
   var body: some View {
     VStack(alignment: .leading) {
@@ -27,12 +27,12 @@ struct OutsideDurationChartView: View {
           Text("\(locationProvider.last28DaysTotal, format: .time(pattern: .hourMinute)) hours")
             .font(.title2.bold())
         }
-        .opacity(selectedElement == nil ? 1 : 0)
+        .opacity(selectedElements.isEmpty ? 1 : 0)
 
-        DurationChart(selectedElement: $selectedElement)
+        DurationChart(selectedElements: $selectedElements)
       }
       .chartBackground { proxy in
-        LollipopView(selectedElement: selectedElement, proxy: proxy)
+        LollipopView(selectedElements: selectedElements, proxy: proxy)
       }
     }
     .padding()
@@ -51,14 +51,14 @@ struct OutsideDurationChartView: View {
 
 struct LollipopView: View {
 
-  var selectedElement: DayEntry? = nil
+  var selectedElements: [DayEntry] = []
   var proxy: ChartProxy
   @Environment(\.layoutDirection) var layoutDirection
 
   var body: some View {
     ZStack(alignment: .topLeading) {
       GeometryReader { nthGeoItem in
-        if let selectedElement = selectedElement {
+        if let selectedElement = selectedElements.first {
           let dateInterval = Calendar.current.dateInterval(of: .day, for: selectedElement.weekday)!
           let startPositionX1 = proxy.position(forX: dateInterval.start) ?? 0
           let startPositionX2 = proxy.position(forX: dateInterval.end) ?? 0
@@ -78,7 +78,7 @@ struct LollipopView: View {
             Text("\(selectedElement.weekday, format: .dateTime.year().month().day())")
               .font(.callout)
               .foregroundStyle(.secondary)
-            Text("\(Duration.seconds(selectedElement.duration), format: .time(pattern: .hourMinute)) hours")
+            Text("\(Duration.seconds(selectedElements.reduce(0, { $0 + $1.duration })), format: .time(pattern: .hourMinute)) hours")
               .font(.title2.bold())
               .foregroundColor(.primary)
           }

@@ -173,10 +173,18 @@
 				F27948CC285F14B600DAF5E0 /* OutsideDurationChartView.swift */,
 				F228A4C528E78751007EF4E3 /* DurationChart.swift */,
 				F27948C8285C68FF00DAF5E0 /* NotMonitoringRegionView.swift */,
-				F2CC311E28F874C600EA653E /* RegionsView.swift */,
+				F2CC312228F973C900EA653E /* Regions */,
 				F228A4C928E831A7007EF4E3 /* EntryList */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		F2CC312228F973C900EA653E /* Regions */ = {
+			isa = PBXGroup;
+			children = (
+				F2CC311E28F874C600EA653E /* RegionsView.swift */,
+			);
+			path = Regions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

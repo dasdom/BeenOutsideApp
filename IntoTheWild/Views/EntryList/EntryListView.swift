@@ -12,41 +12,38 @@ struct EntryListView: View {
   var body: some View {
 
     VStack {
-      Picker("Data Types", selection: $selectedDataType) {
-        Text("Days").tag(0)
-        Text("Entries/Exits").tag(1)
-      }
-      .pickerStyle(.segmented)
+//      Picker("Data Types", selection: $selectedDataType) {
+//        Text("Days").tag(0)
+//        Text("Entries/Exits").tag(1)
+//      }
+//      .pickerStyle(.segmented)
 
-      if selectedDataType == 0 {
-        List {
-          ForEach(locationProvider.dayEntries.reversed(), id: \.self) { dayEntry in
-            HStack {
-              Text(dayEntry.weekday.formatted())
-              Spacer()
-              Text("\(Duration.seconds(dayEntry.duration), format: .time(pattern: .hourMinute)) h")
-            }
-          }
-        }
-      } else {
+//      if selectedDataType == 0 {
+//        List {
+//          ForEach(locationProvider.dayEntries.reversed(), id: \.self) { dayEntry in
+//            HStack {
+//              Text(dayEntry.weekday.formatted())
+//              Spacer()
+//              Text("\(Duration.seconds(dayEntry.duration), format: .time(pattern: .hourMinute)) h")
+//            }
+//          }
+//        }
+//      } else {
         List {
           ForEach(locationProvider.regionUpdates.reversed()) { update in
             HStack {
-              HStack {
-//                Text("\(update.id ?? 0)")
-                Text(update.date.formatted())
-              }
-              Spacer()
               HStack {
                 Text(update.updateTypeRaw)
                 if let regionName = update.regionName {
                   Text(regionName)
                 }
               }
+              Spacer()
+              Text(update.date.formatted())
             }
           }
         }
-      }
+//      }
     }
     .navigationTitle("Entries")
   }

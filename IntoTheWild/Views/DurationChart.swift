@@ -7,26 +7,25 @@ import Charts
 
 struct DurationChart: View {
   @EnvironmentObject private var locationProvider: LocationProvider
-  @Binding var selectedElement: DayEntry?
+  @Binding var selectedElements: [DayEntry]
 
-  func findElement(location: CGPoint, proxy: ChartProxy, geometry: GeometryProxy) -> DayEntry? {
+  func findElements(location: CGPoint, proxy: ChartProxy, geometry: GeometryProxy) -> [DayEntry] {
     let relativeXPosition = location.x - geometry[proxy.plotAreaFrame].origin.x
     if let date = proxy.value(atX: relativeXPosition) as Date? {
       // Find the closest date element.
       var minDistance: TimeInterval = .infinity
-      var index: Int? = nil
-      for salesDataIndex in locationProvider.dayEntries.indices {
-        let nthSalesDataDistance = locationProvider.dayEntries[salesDataIndex].weekday.distance(to: date)
+      for entryIndex in locationProvider.dayEntries.indices {
+        let nthSalesDataDistance = locationProvider.dayEntries[entryIndex].weekday.distance(to: date)
         if abs(nthSalesDataDistance) < minDistance {
           minDistance = abs(nthSalesDataDistance)
-          index = salesDataIndex
         }
       }
-      if let index = index {
-        return locationProvider.dayEntries[index]
-      }
+      return locationProvider.dayEntries.filter({ entry in
+        let nthSalesDataDistance = entry.weekday.distance(to: date)
+        return abs(nthSalesDataDistance) - 0.1 <= minDistance
+      })
     }
-    return nil
+    return []
   }
 
   var body: some View {
@@ -59,13 +58,13 @@ struct DurationChart: View {
           .gesture(
             DragGesture(minimumDistance: 0)
               .onChanged({ value in
-                let element = findElement(location: value.location,
-                                          proxy: proxy,
-                                          geometry: nthGeometryItem)
-                selectedElement = element
+                let elements = findElements(location: value.location,
+                                            proxy: proxy,
+                                            geometry: nthGeometryItem)
+                selectedElements = elements
               })
               .onEnded { value in
-                selectedElement = nil
+                selectedElements = []
               }
           )
       }
