@@ -8,6 +8,7 @@ import CoreLocationUI
 struct OutsideDurationOverviewView: View {
 
   private enum Destination {
+    case settings
     case list
   }
   
@@ -17,7 +18,6 @@ struct OutsideDurationOverviewView: View {
     NavigationStack {
       VStack {
         if let _ = locationProvider.coordinateRegion {
-          //        HeaderView()
 
           OutsideDurationChartView()
 
@@ -40,42 +40,26 @@ struct OutsideDurationOverviewView: View {
       }
       .navigationTitle("Been Outside")
       .toolbar {
+        ToolbarItem(placement: .navigationBarLeading) {
+          NavigationLink(value: Destination.settings) {
+            Image(systemName: "gearshape")
+          }
+        }
         ToolbarItem(placement: .navigationBarTrailing) {
           NavigationLink(value: Destination.list) {
             Image(systemName: "list.bullet")
           }
         }
       }
-      .navigationDestination(for: Destination.self) { _ in
-        EntryListView()
+      .navigationDestination(for: Destination.self) { destination in
+        switch destination {
+          case .settings:
+            RegionsView()
+          case .list:
+            EntryListView()
+        }
       }
     }
-//    .edgesIgnoringSafeArea(.top)
-
   }
 }
 
-//struct ContentView_Previews: PreviewProvider {
-//  
-//  static var locationProvider: LocationProvider = {
-//    let locationProvider = LocationProvider()
-//    let now = Date()
-//    for i in 1..<28 {
-//      if let date = Calendar.current.date(byAdding: .day, value: -i, to: now) {
-//        let dayEntry = DayEntry(duration: TimeInterval.random(in: 1200...20640), weekday: date)
-//        locationProvider.dayEntries.append(dayEntry)
-//      }
-//    }
-//    return locationProvider
-//  }()
-//  
-//  static var previews: some View {
-//    Group {
-//      OutsideDurationOverviewView()
-//        .environmentObject(locationProvider)
-//      OutsideDurationOverviewView()
-//        .environmentObject(locationProvider)
-//        .environment(\.colorScheme, .dark)
-//    }
-//  }
-//}

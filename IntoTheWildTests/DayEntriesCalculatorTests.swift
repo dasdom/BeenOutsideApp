@@ -66,4 +66,13 @@ final class DayEntriesCalculatorTests: XCTestCase {
 
     XCTAssertEqual(result, 0.0, accuracy: 0.1)
   }
+
+  func test_durationFor_exitAndEnterOnNextDay() {
+    let regionUpdate1 = RegionUpdate(date: dateFormatter.date(from: "13.10.2022 08:02")!, updateTypeRaw: "exit")
+    let regionUpdate2 = RegionUpdate(date: dateFormatter.date(from: "13.10.2022 10:01")!, updateTypeRaw: "enter")
+
+    let result = DayEntriesCalculator.durationFor(date: dateFormatter.date(from: "12.10.2022 12:34")!, from: [regionUpdate1, regionUpdate2])
+
+    XCTAssertEqual(result, 0.0, accuracy: 0.1)
+  }
 }

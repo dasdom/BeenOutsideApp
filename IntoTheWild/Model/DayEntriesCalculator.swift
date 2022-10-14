@@ -16,16 +16,24 @@ struct DayEntriesCalculator {
     var duration = 0.0
     var enter: RegionUpdate?
     let calendar = Calendar.current
+    let startOfDay = calendar.startOfDay(for: date)
 
     for regionUpdate in regionUpdates.reversed() {
-      if let unwrappedEnter = enter,
-         regionUpdate.updateType == .exit,
-         calendar.isDate(date, inSameDayAs: regionUpdate.date) {
 
-        if calendar.isDate(unwrappedEnter.date, inSameDayAs: regionUpdate.date) {
-          duration += unwrappedEnter.date.timeIntervalSince(regionUpdate.date)
-        } else if let startOfNextDay = calendar.date(byAdding: .day, value: 1, to: calendar.startOfDay(for: date)) {
-          duration += startOfNextDay.timeIntervalSince(regionUpdate.date)
+      if regionUpdate.date.timeIntervalSince(startOfDay) < 0 {
+        break
+      }
+
+      if let unwrappedEnter = enter,
+         regionUpdate.updateType == .exit {
+
+        if calendar.isDate(date, inSameDayAs: regionUpdate.date) {
+
+          if calendar.isDate(unwrappedEnter.date, inSameDayAs: regionUpdate.date) {
+            duration += unwrappedEnter.date.timeIntervalSince(regionUpdate.date)
+          } else if let startOfNextDay = calendar.date(byAdding: .day, value: 1, to: calendar.startOfDay(for: date)) {
+            duration += startOfNextDay.timeIntervalSince(regionUpdate.date)
+          }
         }
         enter = nil
       } else if regionUpdate.updateType == .enter {
@@ -33,7 +41,6 @@ struct DayEntriesCalculator {
       }
     }
 
-    let startOfDay = calendar.startOfDay(for: date)
     if let enter = enter, enter.date.timeIntervalSince(startOfDay) > 0 {
 
       if calendar.isDate(enter.date, inSameDayAs: startOfDay) {

@@ -29,6 +29,7 @@ class LocationProvider: NSObject,
   @Published var place: IdentifiablePlace = IdentifiablePlace(lat: 0, long: 0)
   @Published var average: Double = 0
   @Published var last28DaysTotal: Duration = .seconds(0)
+  @Published var regions: [MonitoredRegion] = []
 
   let locationManager: CLLocationManager
   var numberOfDays: Int = 7 {
@@ -52,6 +53,12 @@ class LocationProvider: NSObject,
 
     locationManager.delegate = self
     locationManager.requestAlwaysAuthorization()
+
+    regions = locationManager.monitoredRegions.map({ clRegion in
+      let circularRegion = clRegion as! CLCircularRegion
+      let coordinate = Coordinate(clCoordinate: circularRegion.center)
+      return MonitoredRegion(name: circularRegion.identifier, coordinate: coordinate, radius: circularRegion.radius)
+    }).sorted(by: { $0.name < $1.name })
 
     if let homeCoordinate = loadHome() {
       coordinateRegion = MKCoordinateRegion(center: homeCoordinate.clCoordinate, latitudinalMeters: 100, longitudinalMeters: 100)

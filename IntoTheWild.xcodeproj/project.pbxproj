@@ -29,6 +29,8 @@
 		F27948CD285F14B600DAF5E0 /* OutsideDurationChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F27948CC285F14B600DAF5E0 /* OutsideDurationChartView.swift */; };
 		F27948CF285F69B100DAF5E0 /* Coordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F27948CE285F69B100DAF5E0 /* Coordinate.swift */; };
 		F2A029BB247910CE00E1C053 /* DayEntriesCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2A029BA247910CE00E1C053 /* DayEntriesCalculator.swift */; };
+		F2CC311F28F874C600EA653E /* RegionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2CC311E28F874C600EA653E /* RegionsView.swift */; };
+		F2CC312128F875DD00EA653E /* MonitoredRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2CC312028F875DD00EA653E /* MonitoredRegion.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +68,8 @@
 		F27948CC285F14B600DAF5E0 /* OutsideDurationChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutsideDurationChartView.swift; sourceTree = "<group>"; };
 		F27948CE285F69B100DAF5E0 /* Coordinate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinate.swift; sourceTree = "<group>"; };
 		F2A029BA247910CE00E1C053 /* DayEntriesCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayEntriesCalculator.swift; sourceTree = "<group>"; };
+		F2CC311E28F874C600EA653E /* RegionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionsView.swift; sourceTree = "<group>"; };
+		F2CC312028F875DD00EA653E /* MonitoredRegion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitoredRegion.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,6 +154,7 @@
 			isa = PBXGroup;
 			children = (
 				F262BC5823B74C89006EE628 /* LocationProvider.swift */,
+				F2CC312028F875DD00EA653E /* MonitoredRegion.swift */,
 				F207AC1C28E6CFBF0081EF64 /* IdentifiablePlace.swift */,
 				F27948CE285F69B100DAF5E0 /* Coordinate.swift */,
 				F2A029BA247910CE00E1C053 /* DayEntriesCalculator.swift */,
@@ -168,6 +173,7 @@
 				F27948CC285F14B600DAF5E0 /* OutsideDurationChartView.swift */,
 				F228A4C528E78751007EF4E3 /* DurationChart.swift */,
 				F27948C8285C68FF00DAF5E0 /* NotMonitoringRegionView.swift */,
+				F2CC311E28F874C600EA653E /* RegionsView.swift */,
 				F228A4C928E831A7007EF4E3 /* EntryList */,
 			);
 			path = Views;
@@ -294,9 +300,11 @@
 				F262BC4223B73012006EE628 /* AppDelegate.swift in Sources */,
 				F262BC5923B74C89006EE628 /* LocationProvider.swift in Sources */,
 				F227EC0423B9FE2D007C6B2A /* FileManagerExtension.swift in Sources */,
+				F2CC311F28F874C600EA653E /* RegionsView.swift in Sources */,
 				F228A4C628E78751007EF4E3 /* DurationChart.swift in Sources */,
 				F207AC1D28E6CFBF0081EF64 /* IdentifiablePlace.swift in Sources */,
 				F227EC0223B8E9C3007C6B2A /* UpdateType.swift in Sources */,
+				F2CC312128F875DD00EA653E /* MonitoredRegion.swift in Sources */,
 				F227EC0A23BA6209007C6B2A /* DayEntry.swift in Sources */,
 				F27948CB285F133400DAF5E0 /* HeaderView.swift in Sources */,
 				F27948CF285F69B100DAF5E0 /* Coordinate.swift in Sources */,

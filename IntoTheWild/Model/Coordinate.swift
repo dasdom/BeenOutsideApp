@@ -17,3 +17,22 @@ struct Coordinate: Codable {
     longitude = clCoordinate.longitude
   }
 }
+
+extension Coordinate: Hashable {
+  func hash(into hasher: inout Hasher) {
+    hasher.combine(latitude)
+    hasher.combine(longitude)
+  }
+}
+
+extension Coordinate: Equatable {
+  static func == (lhs: Self, rhs: Self) -> Bool {
+    if abs(lhs.latitude - rhs.latitude) > 0.000_001 {
+      return false
+    }
+    if abs(lhs.longitude - rhs.longitude) > 0.000_001 {
+      return false
+    }
+    return true
+  }
+}
