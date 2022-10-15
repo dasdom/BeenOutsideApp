@@ -28,6 +28,12 @@ struct NotMonitoringRegionView: View {
       .multilineTextAlignment(.center)
     }
     .padding()
+    .onAppear {
+      locationProvider.startUpdates()
+    }
+    .onDisappear {
+      locationProvider.stopUpdates()
+    }
   }
 }
 

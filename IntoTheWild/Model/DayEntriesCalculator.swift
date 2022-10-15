@@ -85,8 +85,8 @@ struct DayEntriesCalculator {
       var currentDayEntries: [DayEntry] = []
 
       for i in 0..<numberOfDays {
-        if let date = Calendar.current.date(byAdding: .day, value: -i, to: now), let dateWithLastDuration = dateWithLastDuration {
-          if date.timeIntervalSince(dateWithLastDuration) < 0 {
+        if let date = Calendar.current.date(byAdding: .day, value: -i, to: now) {
+          if let dateWithLastDuration = dateWithLastDuration, date.timeIntervalSince(dateWithLastDuration) < 0 {
             break
           }
           var duration = durationFor(date: date, from: regionUpdates)

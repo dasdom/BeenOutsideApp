@@ -107,7 +107,7 @@ public struct BeenOutside : SQLDatabase, SQLDatabaseAsyncChangeOperations, SQLCr
   public static var creationSQL : String {
     var sql = ""
     sql.append(RegionUpdate.Schema.create)
-    sql.append(#"PRAGMA user_version = 1);"#)
+    sql.append(#"PRAGMA user_version = 1;"#)
     return sql
   }
 

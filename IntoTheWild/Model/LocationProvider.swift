@@ -74,7 +74,7 @@ class LocationProvider: NSObject,
     switch status {
       case .authorizedAlways:
         print("success")
-        manager.startUpdatingLocation()
+//        manager.startUpdatingLocation()
       case .notDetermined:
         print("notDetermined")
       default:
@@ -131,16 +131,30 @@ class LocationProvider: NSObject,
     }
   }
 
+  func startUpdates() {
+    locationManager.startUpdatingLocation()
+  }
+
+  func stopUpdates() {
+    locationManager.stopUpdatingLocation()
+  }
+
   func setHome() {
     if let location = location {
       let region = CLCircularRegion(center: location.coordinate,
                                     radius: 10,
-                                    identifier: "home")
+                                    identifier: "Home")
       locationManager.startMonitoring(for: region)
 
       coordinateRegion = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 100, longitudinalMeters: 100)
 
       writeHome(coordinate: Coordinate(clCoordinate: location.coordinate))
+
+      regions = locationManager.monitoredRegions.map({ clRegion in
+        let circularRegion = clRegion as! CLCircularRegion
+        let coordinate = Coordinate(clCoordinate: circularRegion.center)
+        return MonitoredRegion(name: circularRegion.identifier, coordinate: coordinate, radius: circularRegion.radius)
+      }).sorted(by: { $0.name < $1.name })
     }
   }
 

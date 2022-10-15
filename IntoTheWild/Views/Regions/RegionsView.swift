@@ -27,5 +27,11 @@ struct RegionsView: View {
       }
     }
     .navigationTitle("Regions")
+    .onAppear {
+      locationProvider.startUpdates()
+    }
+    .onDisappear {
+      locationProvider.stopUpdates()
+    }
   }
 }
