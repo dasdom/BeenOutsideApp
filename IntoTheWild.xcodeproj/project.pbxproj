@@ -10,6 +10,17 @@
 		F207AC1D28E6CFBF0081EF64 /* IdentifiablePlace.swift in Sources */ = {isa = PBXBuildFile; fileRef = F207AC1C28E6CFBF0081EF64 /* IdentifiablePlace.swift */; };
 		F207AC2128E7247C0081EF64 /* SQLighter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F207AC2028E7247C0081EF64 /* SQLighter.swift */; };
 		F207AC2228E744BC0081EF64 /* RegionUpdateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F227EBFF23B8E80B007C6B2A /* RegionUpdateExtension.swift */; };
+		F21186ED28FBF40E00109CD1 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F21186EC28FBF40E00109CD1 /* WidgetKit.framework */; };
+		F21186EF28FBF40E00109CD1 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F21186EE28FBF40E00109CD1 /* SwiftUI.framework */; };
+		F21186F228FBF40E00109CD1 /* TimeWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = F21186F128FBF40E00109CD1 /* TimeWidget.swift */; };
+		F21186F428FBF40F00109CD1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F21186F328FBF40F00109CD1 /* Assets.xcassets */; };
+		F21186F828FBF40F00109CD1 /* TimeWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = F21186EA28FBF40E00109CD1 /* TimeWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		F21186FD28FBF62300109CD1 /* FileManagerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F227EC0323B9FE2D007C6B2A /* FileManagerExtension.swift */; };
+		F211870028FBF97D00109CD1 /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F21186FF28FBF97D00109CD1 /* DataStore.swift */; };
+		F211870328FBFD6F00109CD1 /* RegionUpdateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F227EBFF23B8E80B007C6B2A /* RegionUpdateExtension.swift */; };
+		F211870428FBFD8B00109CD1 /* UpdateType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F227EC0123B8E9C3007C6B2A /* UpdateType.swift */; };
+		F211870828FBFEF200109CD1 /* Lighter in Frameworks */ = {isa = PBXBuildFile; productRef = F211870728FBFEF200109CD1 /* Lighter */; };
+		F211870C28FC049A00109CD1 /* SQLighter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F207AC2028E7247C0081EF64 /* SQLighter.swift */; };
 		F227EC0223B8E9C3007C6B2A /* UpdateType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F227EC0123B8E9C3007C6B2A /* UpdateType.swift */; };
 		F227EC0423B9FE2D007C6B2A /* FileManagerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F227EC0323B9FE2D007C6B2A /* FileManagerExtension.swift */; };
 		F227EC0A23BA6209007C6B2A /* DayEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = F227EC0923BA6209007C6B2A /* DayEntry.swift */; };
@@ -34,6 +45,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		F21186F628FBF40F00109CD1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F262BC3623B73012006EE628 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F21186E928FBF40E00109CD1;
+			remoteInfo = TimeWidgetExtension;
+		};
 		F228A4D228E96EA3007EF4E3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F262BC3623B73012006EE628 /* Project object */;
@@ -43,9 +61,32 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		F21186FC28FBF40F00109CD1 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				F21186F828FBF40F00109CD1 /* TimeWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		F207AC1C28E6CFBF0081EF64 /* IdentifiablePlace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentifiablePlace.swift; sourceTree = "<group>"; };
 		F207AC2028E7247C0081EF64 /* SQLighter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLighter.swift; sourceTree = "<group>"; };
+		F21186E528FBF3A100109CD1 /* IntoTheWild.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = IntoTheWild.entitlements; sourceTree = "<group>"; };
+		F21186EA28FBF40E00109CD1 /* TimeWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TimeWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		F21186EC28FBF40E00109CD1 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		F21186EE28FBF40E00109CD1 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		F21186F128FBF40E00109CD1 /* TimeWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeWidget.swift; sourceTree = "<group>"; };
+		F21186F328FBF40F00109CD1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F21186F528FBF40F00109CD1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F21186FF28FBF97D00109CD1 /* DataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
+		F211870B28FBFF9E00109CD1 /* TimeWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TimeWidgetExtension.entitlements; sourceTree = "<group>"; };
 		F227EBFF23B8E80B007C6B2A /* RegionUpdateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionUpdateExtension.swift; sourceTree = "<group>"; };
 		F227EC0123B8E9C3007C6B2A /* UpdateType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateType.swift; sourceTree = "<group>"; };
 		F227EC0323B9FE2D007C6B2A /* FileManagerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerExtension.swift; sourceTree = "<group>"; };
@@ -73,6 +114,16 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		F21186E728FBF40E00109CD1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F211870828FBFEF200109CD1 /* Lighter in Frameworks */,
+				F21186EF28FBF40E00109CD1 /* SwiftUI.framework in Frameworks */,
+				F21186ED28FBF40E00109CD1 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F228A4CB28E96EA3007EF4E3 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -91,6 +142,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F21186EB28FBF40E00109CD1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F21186EC28FBF40E00109CD1 /* WidgetKit.framework */,
+				F21186EE28FBF40E00109CD1 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F21186F028FBF40E00109CD1 /* TimeWidget */ = {
+			isa = PBXGroup;
+			children = (
+				F21186F128FBF40E00109CD1 /* TimeWidget.swift */,
+				F21186F328FBF40F00109CD1 /* Assets.xcassets */,
+				F21186F528FBF40F00109CD1 /* Info.plist */,
+			);
+			path = TimeWidget;
+			sourceTree = "<group>";
+		};
 		F228A4C928E831A7007EF4E3 /* EntryList */ = {
 			isa = PBXGroup;
 			children = (
@@ -110,8 +180,11 @@
 		F262BC3523B73012006EE628 = {
 			isa = PBXGroup;
 			children = (
+				F211870B28FBFF9E00109CD1 /* TimeWidgetExtension.entitlements */,
 				F262BC4023B73012006EE628 /* IntoTheWild */,
 				F228A4CF28E96EA3007EF4E3 /* IntoTheWildTests */,
+				F21186F028FBF40E00109CD1 /* TimeWidget */,
+				F21186EB28FBF40E00109CD1 /* Frameworks */,
 				F262BC3F23B73012006EE628 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -121,6 +194,7 @@
 			children = (
 				F262BC3E23B73012006EE628 /* IntoTheWild.app */,
 				F228A4CE28E96EA3007EF4E3 /* IntoTheWildTests.xctest */,
+				F21186EA28FBF40E00109CD1 /* TimeWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -128,6 +202,7 @@
 		F262BC4023B73012006EE628 /* IntoTheWild */ = {
 			isa = PBXGroup;
 			children = (
+				F21186E528FBF3A100109CD1 /* IntoTheWild.entitlements */,
 				F262BC4123B73012006EE628 /* AppDelegate.swift */,
 				F262BC4323B73012006EE628 /* SceneDelegate.swift */,
 				F2A37FBC28DE493C00B4DAEF /* Views */,
@@ -154,6 +229,7 @@
 			isa = PBXGroup;
 			children = (
 				F262BC5823B74C89006EE628 /* LocationProvider.swift */,
+				F21186FF28FBF97D00109CD1 /* DataStore.swift */,
 				F2CC312028F875DD00EA653E /* MonitoredRegion.swift */,
 				F207AC1C28E6CFBF0081EF64 /* IdentifiablePlace.swift */,
 				F27948CE285F69B100DAF5E0 /* Coordinate.swift */,
@@ -190,6 +266,26 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		F21186E928FBF40E00109CD1 /* TimeWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F21186F928FBF40F00109CD1 /* Build configuration list for PBXNativeTarget "TimeWidgetExtension" */;
+			buildPhases = (
+				F21186E628FBF40E00109CD1 /* Sources */,
+				F21186E728FBF40E00109CD1 /* Frameworks */,
+				F21186E828FBF40E00109CD1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TimeWidgetExtension;
+			packageProductDependencies = (
+				F211870728FBFEF200109CD1 /* Lighter */,
+			);
+			productName = TimeWidgetExtension;
+			productReference = F21186EA28FBF40E00109CD1 /* TimeWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		F228A4CD28E96EA3007EF4E3 /* IntoTheWildTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = F228A4D428E96EA3007EF4E3 /* Build configuration list for PBXNativeTarget "IntoTheWildTests" */;
@@ -215,10 +311,12 @@
 				F262BC3A23B73012006EE628 /* Sources */,
 				F262BC3B23B73012006EE628 /* Frameworks */,
 				F262BC3C23B73012006EE628 /* Resources */,
+				F21186FC28FBF40F00109CD1 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				F21186F728FBF40F00109CD1 /* PBXTargetDependency */,
 			);
 			name = IntoTheWild;
 			packageProductDependencies = (
@@ -238,6 +336,9 @@
 				LastUpgradeCheck = 1400;
 				ORGANIZATIONNAME = dasdom;
 				TargetAttributes = {
+					F21186E928FBF40E00109CD1 = {
+						CreatedOnToolsVersion = 14.0;
+					};
 					F228A4CD28E96EA3007EF4E3 = {
 						CreatedOnToolsVersion = 14.0;
 						TestTargetID = F262BC3D23B73012006EE628;
@@ -265,11 +366,20 @@
 			targets = (
 				F262BC3D23B73012006EE628 /* IntoTheWild */,
 				F228A4CD28E96EA3007EF4E3 /* IntoTheWildTests */,
+				F21186E928FBF40E00109CD1 /* TimeWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		F21186E828FBF40E00109CD1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F21186F428FBF40F00109CD1 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F228A4CC28E96EA3007EF4E3 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -290,6 +400,18 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		F21186E628FBF40E00109CD1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F211870328FBFD6F00109CD1 /* RegionUpdateExtension.swift in Sources */,
+				F21186F228FBF40E00109CD1 /* TimeWidget.swift in Sources */,
+				F211870428FBFD8B00109CD1 /* UpdateType.swift in Sources */,
+				F21186FD28FBF62300109CD1 /* FileManagerExtension.swift in Sources */,
+				F211870C28FC049A00109CD1 /* SQLighter.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F228A4CA28E96EA3007EF4E3 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -315,6 +437,7 @@
 				F2CC312128F875DD00EA653E /* MonitoredRegion.swift in Sources */,
 				F227EC0A23BA6209007C6B2A /* DayEntry.swift in Sources */,
 				F27948CB285F133400DAF5E0 /* HeaderView.swift in Sources */,
+				F211870028FBF97D00109CD1 /* DataStore.swift in Sources */,
 				F27948CF285F69B100DAF5E0 /* Coordinate.swift in Sources */,
 				F262BC4423B73012006EE628 /* SceneDelegate.swift in Sources */,
 				F27948C9285C68FF00DAF5E0 /* NotMonitoringRegionView.swift in Sources */,
@@ -327,6 +450,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		F21186F728FBF40F00109CD1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F21186E928FBF40E00109CD1 /* TimeWidgetExtension */;
+			targetProxy = F21186F628FBF40F00109CD1 /* PBXContainerItemProxy */;
+		};
 		F228A4D328E96EA3007EF4E3 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = F262BC3D23B73012006EE628 /* IntoTheWild */;
@@ -346,6 +474,66 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		F21186FA28FBF40F00109CD1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_ENTITLEMENTS = TimeWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 7;
+				DEVELOPMENT_TEAM = Q6PD97MRX4;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TimeWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = TimeWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 dasdom. All rights reserved.";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = de.dasdom.beenoutside.TimeWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F21186FB28FBF40F00109CD1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_ENTITLEMENTS = TimeWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 7;
+				DEVELOPMENT_TEAM = Q6PD97MRX4;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TimeWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = TimeWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 dasdom. All rights reserved.";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = de.dasdom.beenoutside.TimeWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		F228A4D528E96EA3007EF4E3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -505,7 +693,9 @@
 		F262BC5323B7301D006EE628 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = IntoTheWild/IntoTheWild.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_ASSET_PATHS = "\"IntoTheWild/Preview Content\"";
@@ -533,7 +723,9 @@
 		F262BC5423B7301D006EE628 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = IntoTheWild/IntoTheWild.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_ASSET_PATHS = "\"IntoTheWild/Preview Content\"";
@@ -561,6 +753,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		F21186F928FBF40F00109CD1 /* Build configuration list for PBXNativeTarget "TimeWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F21186FA28FBF40F00109CD1 /* Debug */,
+				F21186FB28FBF40F00109CD1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		F228A4D428E96EA3007EF4E3 /* Build configuration list for PBXNativeTarget "IntoTheWildTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -602,6 +803,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		F211870728FBFEF200109CD1 /* Lighter */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F228A4D928EAD356007EF4E3 /* XCRemoteSwiftPackageReference "Lighter" */;
+			productName = Lighter;
+		};
 		F228A4DA28EAD356007EF4E3 /* Lighter */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = F228A4D928EAD356007EF4E3 /* XCRemoteSwiftPackageReference "Lighter" */;

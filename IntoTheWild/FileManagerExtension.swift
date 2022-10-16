@@ -5,7 +5,7 @@
 import Foundation
 
 extension FileManager {
-  private static func documentsURL() -> URL {
+  private func documentsURL() -> URL {
     guard let url = FileManager.default.urls(
       for: .documentDirectory,
       in: .userDomainMask).first else {
@@ -14,15 +14,36 @@ extension FileManager {
     return url
   }
   
-  static func regionUpdatesDataPath() -> URL {
+  func regionUpdatesDataPath() -> URL {
     return documentsURL().appendingPathComponent("region_updates.json")
   }
 
-  static func regionUpdatesSQLitePath() -> URL {
-    return documentsURL().appendingPathComponent("region_updates.sqlite")
+  func lastUpdatURL() -> URL {
+    if let url = containerURL(forSecurityApplicationGroupIdentifier: "group.de.dasdom.beenoutside") {
+      let lastUpdatesURL = url.appendingPathComponent("last_update.json")
+      return lastUpdatesURL
+    } else {
+      return documentsURL().appendingPathComponent("last_update.json")
+    }
   }
 
-  static func homeCoordinateURL() -> URL {
+  func regionUpdatesSQLitePath() -> URL {
+    let preGroupURL = documentsURL().appendingPathComponent("region_updates.sqlite")
+
+    if let url = containerURL(forSecurityApplicationGroupIdentifier: "group.de.dasdom.beenoutside") {
+      let regionUpdatesURL = url.appendingPathComponent("region_updates.sqlite")
+      if false == fileExists(atPath: regionUpdatesURL.path) {
+        if fileExists(atPath: preGroupURL.path) {
+          try? copyItem(at: preGroupURL, to: regionUpdatesURL)
+        }
+      }
+      return regionUpdatesURL
+    } else {
+      return preGroupURL
+    }
+  }
+
+  func homeCoordinateURL() -> URL {
     return documentsURL().appendingPathComponent("home.json")
   }
 }

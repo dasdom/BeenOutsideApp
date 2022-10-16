@@ -7,6 +7,7 @@ import SwiftUI
 struct EntryListView: View {
 
   @EnvironmentObject private var locationProvider: LocationProvider
+  @EnvironmentObject private var dataStore: DataStore
   @State private var selectedDataType = 0
 
   var body: some View {
@@ -30,7 +31,7 @@ struct EntryListView: View {
 //        }
 //      } else {
         List {
-          ForEach(locationProvider.regionUpdates.reversed()) { update in
+          ForEach(dataStore.regionUpdates.reversed()) { update in
             HStack {
               HStack {
                 Text(update.updateTypeRaw)

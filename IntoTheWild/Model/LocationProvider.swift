@@ -5,8 +5,6 @@
 import UIKit
 import CoreLocation
 import MapKit
-import SQLite3
-import Lighter
 
 func date(year: Int, month: Int, day: Int = 1) -> Date {
   Calendar.current.date(from: DateComponents(year: year, month: month, day: day)) ?? Date()
@@ -16,13 +14,13 @@ class LocationProvider: NSObject,
                         CLLocationManagerDelegate,
                         ObservableObject {
 
-  var db: BeenOutside!
+//  var db: BeenOutside!
   @Published var wrongAuthorization = false
   @Published var location: CLLocation?
-  @Published var dayEntries: [DayEntry] = []
+//  @Published var dayEntries: [DayEntry] = []
   @Published var place: IdentifiablePlace = IdentifiablePlace(lat: 0, long: 0)
-  @Published var average: Double = 0
-  @Published var last28DaysTotal: Duration = .seconds(0)
+//  @Published var average: Double = 0
+//  @Published var last28DaysTotal: Duration = .seconds(0)
   @Published var regions: [MonitoredRegion] = []
   @Published var coordinateRegion: MKCoordinateRegion? {
     didSet {
@@ -31,26 +29,27 @@ class LocationProvider: NSObject,
       }
     }
   }
-
   let locationManager: CLLocationManager
-  var numberOfDays: Int = 7 {
-    didSet {
-      updateValues()
-    }
-  }
-  var regionUpdates: [RegionUpdate] = [] {
-    didSet {
-      updateValues()
-    }
-  }
+//  var numberOfDays: Int = 7 {
+//    didSet {
+//      updateValues()
+//    }
+//  }
+//  var regionUpdates: [RegionUpdate] = [] {
+//    didSet {
+//      updateValues()
+//    }
+//  }
+  let dataStore: DataStore
 
-  override init() {
+  init(dataStore: DataStore) {
     
     locationManager = CLLocationManager()
+    self.dataStore = dataStore
     
     super.init()
     
-    loadRegionUpdates()
+//    loadRegionUpdates()
 
     locationManager.delegate = self
     locationManager.requestAlwaysAuthorization()
@@ -102,7 +101,7 @@ class LocationProvider: NSObject,
                        didEnterRegion region: CLRegion) {
     
     print("didEnterRegion: \(String(describing: region))")
-    addRegionUpdate(type: .enter, name: region.identifier)
+    dataStore.addRegionUpdate(type: .enter, name: region.identifier)
   }
 
   func locationManager(_ manager: CLLocationManager,
@@ -110,26 +109,26 @@ class LocationProvider: NSObject,
     
     print("didExitRegion: \(String(describing: region))")
 
-    addRegionUpdate(type: .exit, name: region.identifier)
+    dataStore.addRegionUpdate(type: .exit, name: region.identifier)
   }
 
-  func addRegionUpdate(type: UpdateType, name: String? = nil) {
-
-    let now = Date()
-    
-    let lastUpdateType = regionUpdates.last?.updateType
-    if type != lastUpdateType {
-      let id = (regionUpdates.last?.id ?? 0) + 1
-      let regionUpdate = RegionUpdate(id: id, date: now, updateTypeRaw: type.rawValue, regionName: name)
-      regionUpdates.append(regionUpdate)
-      do {
-        _ = try db.insert(regionUpdate)
-      } catch {
-        print("\(#filePath), \(#line): error: \(error)")
-
-      }
-    }
-  }
+//  func addRegionUpdate(type: UpdateType, name: String? = nil) {
+//
+//    let now = Date()
+//
+//    let lastUpdateType = regionUpdates.last?.updateType
+//    if type != lastUpdateType {
+//      let id = (regionUpdates.last?.id ?? 0) + 1
+//      let regionUpdate = RegionUpdate(id: id, date: now, updateTypeRaw: type.rawValue, regionName: name)
+//      regionUpdates.append(regionUpdate)
+//      do {
+//        _ = try db.insert(regionUpdate)
+//      } catch {
+//        print("\(#filePath), \(#line): error: \(error)")
+//
+//      }
+//    }
+//  }
 
   func startUpdates() {
     locationManager.startUpdatingLocation()
@@ -158,24 +157,24 @@ class LocationProvider: NSObject,
     }
   }
 
-  func loadRegionUpdates() {
-    let sqliteURL = FileManager.regionUpdatesSQLitePath()
-    do {
-      db = try BeenOutside.bootstrap(at: sqliteURL)
-    } catch {
-      print("\(#filePath), \(#line): error: \(error)")
-    }
-    do {
-      regionUpdates = try db.regionUpdates.fetch()
-    } catch {
-      regionUpdates = []
-    }
-  }
+//  func loadRegionUpdates() {
+//    let sqliteURL = FileManager.default.regionUpdatesSQLitePath()
+//    do {
+//      db = try BeenOutside.bootstrap(at: sqliteURL)
+//    } catch {
+//      print("\(#filePath), \(#line): error: \(error)")
+//    }
+//    do {
+//      regionUpdates = try db.regionUpdates.fetch(limit: 50)
+//    } catch {
+//      regionUpdates = []
+//    }
+//  }
 
   func writeHome(coordinate: Coordinate) {
     do {
       let data = try JSONEncoder().encode(coordinate)
-      try data.write(to: FileManager.homeCoordinateURL(), options: .atomic)
+      try data.write(to: FileManager.default.homeCoordinateURL(), options: .atomic)
     } catch {
       print("error: \(error)")
     }
@@ -183,7 +182,7 @@ class LocationProvider: NSObject,
 
   func loadHome() -> Coordinate? {
     do {
-      let data = try Data(contentsOf: FileManager.homeCoordinateURL())
+      let data = try Data(contentsOf: FileManager.default.homeCoordinateURL())
       return try JSONDecoder().decode(Coordinate.self, from: data)
     } catch {
       print("error: \(error)")
@@ -191,11 +190,11 @@ class LocationProvider: NSObject,
     return nil
   }
 
-  func updateValues() {
-    dayEntries = DayEntriesCalculator.dayEntries(from: regionUpdates, numberOfDays: numberOfDays)
-    let totalSeconds = dayEntries.filter({ $0.type == .outside }).map({ $0.duration }).reduce(0.0, +)
-    last28DaysTotal = .seconds(totalSeconds)
-    average = totalSeconds / 60.0 / 60.0 / Double(numberOfDays)
-    print("totalSeconds: \(totalSeconds), average: \(average), numberOfDays: \(numberOfDays)")
-  }
+//  func updateValues() {
+//    dayEntries = DayEntriesCalculator.dayEntries(from: regionUpdates, numberOfDays: numberOfDays)
+//    let totalSeconds = dayEntries.filter({ $0.type == .outside }).map({ $0.duration }).reduce(0.0, +)
+//    last28DaysTotal = .seconds(totalSeconds)
+//    average = totalSeconds / 60.0 / 60.0 / Double(numberOfDays)
+//    print("totalSeconds: \(totalSeconds), average: \(average), numberOfDays: \(numberOfDays)")
+//  }
 }

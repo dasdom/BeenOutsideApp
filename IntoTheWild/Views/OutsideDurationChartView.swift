@@ -8,6 +8,7 @@ import Charts
 struct OutsideDurationChartView: View {
 
   @EnvironmentObject private var locationProvider: LocationProvider
+  @EnvironmentObject private var dataStore: DataStore
   @State private var selectedTimeFrame = 0
   @State private var selectedElements: [DayEntry] = []
 
@@ -24,7 +25,7 @@ struct OutsideDurationChartView: View {
           Text("Total time spend away from home")
             .font(.callout)
             .foregroundStyle(.secondary)
-          Text("\(locationProvider.last28DaysTotal, format: .time(pattern: .hourMinute)) hours")
+          Text("\(dataStore.last28DaysTotal, format: .time(pattern: .hourMinute)) hours")
             .font(.title2.bold())
         }
         .opacity(selectedElements.isEmpty ? 1 : 0)
@@ -39,11 +40,11 @@ struct OutsideDurationChartView: View {
     .onChange(of: selectedTimeFrame) { newValue in
       switch newValue {
         case 0:
-          locationProvider.numberOfDays = 7
+          dataStore.numberOfDays = 7
         case 1:
-          locationProvider.numberOfDays = 30
+          dataStore.numberOfDays = 30
         default:
-          locationProvider.numberOfDays = 7
+          dataStore.numberOfDays = 7
       }
     }
   }

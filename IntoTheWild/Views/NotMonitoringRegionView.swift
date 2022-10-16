@@ -37,9 +37,9 @@ struct NotMonitoringRegionView: View {
   }
 }
 
-struct NotMonitoringRegionView_Previews: PreviewProvider {
-  static var previews: some View {
-    NotMonitoringRegionView()
-      .environmentObject(LocationProvider())
-  }
-}
+//struct NotMonitoringRegionView_Previews: PreviewProvider {
+//  static var previews: some View {
+//    NotMonitoringRegionView()
+//      .environmentObject(LocationProvider())
+//  }
+//}

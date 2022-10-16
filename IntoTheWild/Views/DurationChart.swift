@@ -7,6 +7,7 @@ import Charts
 
 struct DurationChart: View {
   @EnvironmentObject private var locationProvider: LocationProvider
+  @EnvironmentObject private var dataStore: DataStore
   @Binding var selectedElements: [DayEntry]
 
   func findElements(location: CGPoint, proxy: ChartProxy, geometry: GeometryProxy) -> [DayEntry] {
@@ -14,13 +15,13 @@ struct DurationChart: View {
     if let date = proxy.value(atX: relativeXPosition) as Date? {
       // Find the closest date element.
       var minDistance: TimeInterval = .infinity
-      for entryIndex in locationProvider.dayEntries.indices {
-        let nthSalesDataDistance = locationProvider.dayEntries[entryIndex].weekday.distance(to: date)
+      for entryIndex in dataStore.dayEntries.indices {
+        let nthSalesDataDistance = dataStore.dayEntries[entryIndex].weekday.distance(to: date)
         if abs(nthSalesDataDistance) < minDistance {
           minDistance = abs(nthSalesDataDistance)
         }
       }
-      return locationProvider.dayEntries.filter({ entry in
+      return dataStore.dayEntries.filter({ entry in
         let nthSalesDataDistance = entry.weekday.distance(to: date)
         return abs(nthSalesDataDistance) - 0.1 <= minDistance
       })
@@ -30,7 +31,7 @@ struct DurationChart: View {
 
   var body: some View {
     Chart {
-      ForEach(locationProvider.dayEntries, id: \.self) { entry in
+      ForEach(dataStore.dayEntries, id: \.self) { entry in
         BarMark(
           x: .value("Day", entry.weekday, unit: .day),
           y: .value("Duration", entry.duration / 3600)
@@ -38,11 +39,11 @@ struct DurationChart: View {
         .foregroundStyle(by: .value("Type", entry.isCurrent ? "Current" : "Past" ))
       }
 
-      RuleMark(y: .value("Average", locationProvider.average))
+      RuleMark(y: .value("Average", dataStore.average))
         .lineStyle(StrokeStyle(lineWidth: 2, dash: [15, 10]))
         .foregroundStyle(Color(uiColor: UIColor.label))
         .annotation(position: .top, alignment: .leading) {
-          Text("Average: \(Duration.seconds(locationProvider.average * 60.0 * 60.0), format: .time(pattern: .hourMinute)) hours")
+          Text("Average: \(Duration.seconds(dataStore.average * 60.0 * 60.0), format: .time(pattern: .hourMinute)) hours")
             .font(.footnote)
             .foregroundStyle(Color(uiColor: UIColor.label))
             .padding(.horizontal, 5)
@@ -69,6 +70,6 @@ struct DurationChart: View {
           )
       }
     }
-    .animation(.default, value: locationProvider.dayEntries)
+    .animation(.default, value: dataStore.dayEntries)
   }
 }

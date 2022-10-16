@@ -13,6 +13,7 @@ struct OutsideDurationOverviewView: View {
   }
   
   @EnvironmentObject private var locationProvider: LocationProvider
+  @EnvironmentObject private var dataStore: DataStore
 
   var body: some View {
     NavigationStack {
@@ -21,11 +22,11 @@ struct OutsideDurationOverviewView: View {
           TimelineView(.everyMinute) { context in
             OutsideDurationChartView()
               .onChange(of: context.date) { (newValue: Date) in
-                locationProvider.updateValues()
+                dataStore.updateValues()
               }
           }
 
-          if let regionUpdate = locationProvider.regionUpdates.last {
+          if let regionUpdate = dataStore.regionUpdates.last {
             Text("Last \(regionUpdate.updateType.rawValue): \(regionUpdate.date.formatted(date: .abbreviated, time: .shortened))")
               .font(.footnote)
           }
