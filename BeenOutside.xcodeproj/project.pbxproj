@@ -93,9 +93,9 @@
 		F227EC0923BA6209007C6B2A /* DayEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayEntry.swift; sourceTree = "<group>"; };
 		F228A4C528E78751007EF4E3 /* DurationChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurationChart.swift; sourceTree = "<group>"; };
 		F228A4C728E831A0007EF4E3 /* EntryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryListView.swift; sourceTree = "<group>"; };
-		F228A4CE28E96EA3007EF4E3 /* IntoTheWildTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IntoTheWildTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F228A4CE28E96EA3007EF4E3 /* BeenOutsideTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BeenOutsideTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F228A4D728E96ECA007EF4E3 /* DayEntriesCalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayEntriesCalculatorTests.swift; sourceTree = "<group>"; };
-		F262BC3E23B73012006EE628 /* IntoTheWild.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IntoTheWild.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F262BC3E23B73012006EE628 /* BeenOutside.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BeenOutside.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F262BC4123B73012006EE628 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F262BC4323B73012006EE628 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		F262BC4523B73012006EE628 /* OutsideDurationOverviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutsideDurationOverviewView.swift; sourceTree = "<group>"; };
@@ -192,8 +192,8 @@
 		F262BC3F23B73012006EE628 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F262BC3E23B73012006EE628 /* IntoTheWild.app */,
-				F228A4CE28E96EA3007EF4E3 /* IntoTheWildTests.xctest */,
+				F262BC3E23B73012006EE628 /* BeenOutside.app */,
+				F228A4CE28E96EA3007EF4E3 /* BeenOutsideTests.xctest */,
 				F21186EA28FBF40E00109CD1 /* TimeWidgetExtension.appex */,
 			);
 			name = Products;
@@ -286,9 +286,9 @@
 			productReference = F21186EA28FBF40E00109CD1 /* TimeWidgetExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
-		F228A4CD28E96EA3007EF4E3 /* IntoTheWildTests */ = {
+		F228A4CD28E96EA3007EF4E3 /* BeenOutsideTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F228A4D428E96EA3007EF4E3 /* Build configuration list for PBXNativeTarget "IntoTheWildTests" */;
+			buildConfigurationList = F228A4D428E96EA3007EF4E3 /* Build configuration list for PBXNativeTarget "BeenOutsideTests" */;
 			buildPhases = (
 				F228A4CA28E96EA3007EF4E3 /* Sources */,
 				F228A4CB28E96EA3007EF4E3 /* Frameworks */,
@@ -299,14 +299,14 @@
 			dependencies = (
 				F228A4D328E96EA3007EF4E3 /* PBXTargetDependency */,
 			);
-			name = IntoTheWildTests;
+			name = BeenOutsideTests;
 			productName = IntoTheWildTests;
-			productReference = F228A4CE28E96EA3007EF4E3 /* IntoTheWildTests.xctest */;
+			productReference = F228A4CE28E96EA3007EF4E3 /* BeenOutsideTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		F262BC3D23B73012006EE628 /* IntoTheWild */ = {
+		F262BC3D23B73012006EE628 /* BeenOutside */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F262BC5223B7301D006EE628 /* Build configuration list for PBXNativeTarget "IntoTheWild" */;
+			buildConfigurationList = F262BC5223B7301D006EE628 /* Build configuration list for PBXNativeTarget "BeenOutside" */;
 			buildPhases = (
 				F262BC3A23B73012006EE628 /* Sources */,
 				F262BC3B23B73012006EE628 /* Frameworks */,
@@ -318,12 +318,12 @@
 			dependencies = (
 				F21186F728FBF40F00109CD1 /* PBXTargetDependency */,
 			);
-			name = IntoTheWild;
+			name = BeenOutside;
 			packageProductDependencies = (
 				F228A4DA28EAD356007EF4E3 /* Lighter */,
 			);
 			productName = IntoTheWild;
-			productReference = F262BC3E23B73012006EE628 /* IntoTheWild.app */;
+			productReference = F262BC3E23B73012006EE628 /* BeenOutside.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -348,7 +348,7 @@
 					};
 				};
 			};
-			buildConfigurationList = F262BC3923B73012006EE628 /* Build configuration list for PBXProject "IntoTheWild" */;
+			buildConfigurationList = F262BC3923B73012006EE628 /* Build configuration list for PBXProject "BeenOutside" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -364,8 +364,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				F262BC3D23B73012006EE628 /* IntoTheWild */,
-				F228A4CD28E96EA3007EF4E3 /* IntoTheWildTests */,
+				F262BC3D23B73012006EE628 /* BeenOutside */,
+				F228A4CD28E96EA3007EF4E3 /* BeenOutsideTests */,
 				F21186E928FBF40E00109CD1 /* TimeWidgetExtension */,
 			);
 		};
@@ -457,7 +457,7 @@
 		};
 		F228A4D328E96EA3007EF4E3 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = F262BC3D23B73012006EE628 /* IntoTheWild */;
+			target = F262BC3D23B73012006EE628 /* BeenOutside */;
 			targetProxy = F228A4D228E96EA3007EF4E3 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -550,7 +550,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/IntoTheWild.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/IntoTheWild";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BeenOutside.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/BeenOutside";
 			};
 			name = Debug;
 		};
@@ -570,7 +570,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/IntoTheWild.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/IntoTheWild";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BeenOutside.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/BeenOutside";
 			};
 			name = Release;
 		};
@@ -762,7 +762,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F228A4D428E96EA3007EF4E3 /* Build configuration list for PBXNativeTarget "IntoTheWildTests" */ = {
+		F228A4D428E96EA3007EF4E3 /* Build configuration list for PBXNativeTarget "BeenOutsideTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F228A4D528E96EA3007EF4E3 /* Debug */,
@@ -771,7 +771,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F262BC3923B73012006EE628 /* Build configuration list for PBXProject "IntoTheWild" */ = {
+		F262BC3923B73012006EE628 /* Build configuration list for PBXProject "BeenOutside" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F262BC5023B7301D006EE628 /* Debug */,
@@ -780,7 +780,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F262BC5223B7301D006EE628 /* Build configuration list for PBXNativeTarget "IntoTheWild" */ = {
+		F262BC5223B7301D006EE628 /* Build configuration list for PBXNativeTarget "BeenOutside" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F262BC5323B7301D006EE628 /* Debug */,
