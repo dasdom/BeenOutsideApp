@@ -27,7 +27,7 @@ struct OutsideDurationOverviewView: View {
           }
 
           if let regionUpdate = dataStore.regionUpdates.last {
-            Text("Last \(regionUpdate.updateType.rawValue): \(regionUpdate.date.formatted(date: .abbreviated, time: .shortened))")
+            lastEntryView(for: regionUpdate.updateType, date: regionUpdate.date)
               .font(.footnote)
           }
         } else {
@@ -66,5 +66,28 @@ struct OutsideDurationOverviewView: View {
       }
     }
   }
+
+  func lastEntryView(for updateType: UpdateType, date: Date) -> some View {
+    let imageName: String
+    let text: String
+    switch updateType {
+      case .exit:
+        imageName = "leaf"
+        text = "Outside since"
+      case .enter:
+        imageName = "house"
+        text = "Inside since"
+    }
+    return AnyView(
+      HStack {
+        Image(systemName: imageName)
+        HStack(spacing: 4) {
+          Text(text)
+          Text(date, style: .relative)
+        }
+      }
+    )
+  }
+
 }
 
