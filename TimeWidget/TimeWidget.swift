@@ -18,14 +18,6 @@ struct Provider: TimelineProvider {
   func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
     var entries: [RegionUpdateEntry] = []
 
-    //        // Generate a timeline consisting of five entries an hour apart, starting from the current date.
-    //        let currentDate = Date()
-    //        for hourOffset in 0 ..< 5 {
-    //            let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-    //            let entry = SimpleEntry(date: entryDate)
-    //            entries.append(entry)
-    //        }
-
     do {
       let data = try Data(contentsOf: FileManager.default.lastUpdatURL())
       let lastUpdate = try JSONDecoder().decode(RegionUpdate.self, from: data)
@@ -69,10 +61,10 @@ struct TimeWidgetEntryView : View {
     switch updateType {
       case .exit:
         imageName = "leaf"
-        text = "Outside since"
+        text = "Outside for"
       case .enter:
         imageName = "house"
-        text = "Inside since"
+        text = "Inside for"
     }
     if widgetFamily == .accessoryRectangular {
       return AnyView(
@@ -109,9 +101,3 @@ struct TimeWidget: Widget {
   }
 }
 
-//struct TimeWidget_Previews: PreviewProvider {
-//    static var previews: some View {
-//        TimeWidgetEntryView(entry: SimpleEntry(date: Date()))
-//            .previewContext(WidgetPreviewContext(family: .systemSmall))
-//    }
-//}

@@ -20,8 +20,8 @@ struct RegionsView: View {
             Text("Radius: \(region.radius, format: .number) m")
           }
 //          Text("(\(region.coordinate.latitude), \(region.coordinate.longitude))")
-          if let location = locationProvider.location {
-            Text("Current distance: \(Int(location.distance(from: CLLocation(latitude: region.coordinate.latitude, longitude: region.coordinate.longitude))), format: .number) m")
+          if let distance = distance(for: region), distance > 0 {
+            Text("Current distance: \(distance, format: .number) km")
           }
         }
       }
@@ -32,6 +32,14 @@ struct RegionsView: View {
     }
     .onDisappear {
       locationProvider.stopUpdates()
+    }
+  }
+
+  func distance(for region: MonitoredRegion) -> Int? {
+    if let location = locationProvider.location {
+      return Int(location.distance(from: CLLocation(latitude: region.coordinate.latitude, longitude: region.coordinate.longitude))) / 1000
+    } else {
+      return nil
     }
   }
 }
