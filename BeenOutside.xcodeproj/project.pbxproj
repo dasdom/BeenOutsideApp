@@ -28,6 +28,7 @@
 		F228A4C828E831A0007EF4E3 /* EntryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F228A4C728E831A0007EF4E3 /* EntryListView.swift */; };
 		F228A4D828E96ECA007EF4E3 /* DayEntriesCalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F228A4D728E96ECA007EF4E3 /* DayEntriesCalculatorTests.swift */; };
 		F228A4DB28EAD356007EF4E3 /* Lighter in Frameworks */ = {isa = PBXBuildFile; productRef = F228A4DA28EAD356007EF4E3 /* Lighter */; };
+		F23FE52429091D520091A9C1 /* NoEntriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F23FE52329091D520091A9C1 /* NoEntriesView.swift */; };
 		F262BC4223B73012006EE628 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F262BC4123B73012006EE628 /* AppDelegate.swift */; };
 		F262BC4423B73012006EE628 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F262BC4323B73012006EE628 /* SceneDelegate.swift */; };
 		F262BC4623B73012006EE628 /* OutsideDurationOverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F262BC4523B73012006EE628 /* OutsideDurationOverviewView.swift */; };
@@ -94,6 +95,7 @@
 		F228A4C728E831A0007EF4E3 /* EntryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryListView.swift; sourceTree = "<group>"; };
 		F228A4CE28E96EA3007EF4E3 /* BeenOutsideTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BeenOutsideTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F228A4D728E96ECA007EF4E3 /* DayEntriesCalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayEntriesCalculatorTests.swift; sourceTree = "<group>"; };
+		F23FE52329091D520091A9C1 /* NoEntriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoEntriesView.swift; sourceTree = "<group>"; };
 		F262BC3E23B73012006EE628 /* BeenOutside.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BeenOutside.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F262BC4123B73012006EE628 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F262BC4323B73012006EE628 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -181,6 +183,7 @@
 				F262BC4523B73012006EE628 /* OutsideDurationOverviewView.swift */,
 				F27948CC285F14B600DAF5E0 /* OutsideDurationChartView.swift */,
 				F228A4C528E78751007EF4E3 /* DurationChart.swift */,
+				F23FE52329091D520091A9C1 /* NoEntriesView.swift */,
 				F27948C8285C68FF00DAF5E0 /* NotMonitoringRegionView.swift */,
 			);
 			path = Main;
@@ -445,6 +448,7 @@
 				F27948CF285F69B100DAF5E0 /* Coordinate.swift in Sources */,
 				F262BC4423B73012006EE628 /* SceneDelegate.swift in Sources */,
 				F27948C9285C68FF00DAF5E0 /* NotMonitoringRegionView.swift in Sources */,
+				F23FE52429091D520091A9C1 /* NoEntriesView.swift in Sources */,
 				F228A4C828E831A0007EF4E3 /* EntryListView.swift in Sources */,
 				F262BC4623B73012006EE628 /* OutsideDurationOverviewView.swift in Sources */,
 				F207AC2128E7247C0081EF64 /* SQLighter.swift in Sources */,

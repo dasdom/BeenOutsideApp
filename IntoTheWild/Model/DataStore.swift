@@ -9,7 +9,7 @@ import WidgetKit
 class DataStore: ObservableObject {
 
   @Published var dayEntries: [DayEntry] = []
-  @Published var last28DaysTotal: Duration = .seconds(0)
+  @Published var lastXDaysTotal: Duration = .seconds(0)
   @Published var average: Double = 0
   var db: BeenOutside!
   var numberOfDays: Int = 7 {
@@ -21,6 +21,9 @@ class DataStore: ObservableObject {
     didSet {
       updateValues()
     }
+  }
+  var numberOfNotEmptyDayEntries: Int {
+    return dayEntries.filter({ $0.duration > 0 }).count
   }
 
   init() {
@@ -35,7 +38,7 @@ class DataStore: ObservableObject {
       print("\(#filePath), \(#line): error: \(error)")
     }
     do {
-      regionUpdates = try db.regionUpdates.fetch(limit: 50)
+      regionUpdates = try db.regionUpdates.fetch(limit: 100)
     } catch {
       regionUpdates = []
     }
@@ -66,7 +69,7 @@ class DataStore: ObservableObject {
   func updateValues() {
     dayEntries = DayEntriesCalculator.dayEntries(from: regionUpdates, numberOfDays: numberOfDays)
     let totalSeconds = dayEntries.filter({ $0.type == .outside }).map({ $0.duration }).reduce(0.0, +)
-    last28DaysTotal = .seconds(totalSeconds)
+    lastXDaysTotal = .seconds(totalSeconds)
     average = totalSeconds / 60.0 / 60.0 / Double(numberOfDays)
     print("totalSeconds: \(totalSeconds), average: \(average), numberOfDays: \(numberOfDays)")
   }

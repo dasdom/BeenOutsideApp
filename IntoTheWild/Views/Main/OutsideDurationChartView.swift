@@ -20,20 +20,30 @@ struct OutsideDurationChartView: View {
       }
       .pickerStyle(.segmented)
 
-      VStack(alignment: .leading) {
-        VStack(alignment: .leading) {
-          Text("Total time spend away from home")
-            .font(.callout)
-            .foregroundStyle(.secondary)
-          Text("\(dataStore.last28DaysTotal, format: .time(pattern: .hourMinute)) hours")
-            .font(.title2.bold())
-        }
-        .opacity(selectedElements.isEmpty ? 1 : 0)
+      if dataStore.numberOfNotEmptyDayEntries < 1 {
 
-        DurationChart(selectedElements: $selectedElements)
-      }
-      .chartBackground { proxy in
-        LollipopView(selectedElements: selectedElements, proxy: proxy)
+        VStack {
+          Spacer()
+          NoEntriesView()
+          Spacer()
+        }
+      } else {
+
+        VStack(alignment: .leading) {
+          VStack(alignment: .leading) {
+            Text("Total time spend away from home")
+              .font(.callout)
+              .foregroundStyle(.secondary)
+            Text("\(dataStore.lastXDaysTotal, format: .time(pattern: .hourMinute)) hours")
+              .font(.title2.bold())
+          }
+          .opacity(selectedElements.isEmpty ? 1 : 0)
+
+          DurationChart(selectedElements: $selectedElements)
+        }
+        .chartBackground { proxy in
+          LollipopView(selectedElements: selectedElements, proxy: proxy)
+        }
       }
     }
     .padding()
