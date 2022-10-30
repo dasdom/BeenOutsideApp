@@ -18,17 +18,18 @@ class LocationProvider: NSObject,
   @Published var wrongAuthorization = false
   @Published var location: CLLocation?
 //  @Published var dayEntries: [DayEntry] = []
-  @Published var place: IdentifiablePlace = IdentifiablePlace(lat: 0, long: 0)
+//  @Published var place: IdentifiablePlace = IdentifiablePlace(lat: 0, long: 0)
 //  @Published var average: Double = 0
 //  @Published var last28DaysTotal: Duration = .seconds(0)
   @Published var regions: [MonitoredRegion] = []
-  @Published var coordinateRegion: MKCoordinateRegion? {
-    didSet {
-      if let center = coordinateRegion?.center {
-        place = IdentifiablePlace(lat: center.latitude, long: center.longitude)
-      }
-    }
-  }
+  @Published var coordinateRegion: MKCoordinateRegion?
+//  {
+//    didSet {
+//      if let center = coordinateRegion?.center {
+//        place = IdentifiablePlace(lat: center.latitude, long: center.longitude)
+//      }
+//    }
+//  }
   let locationManager: CLLocationManager
 //  var numberOfDays: Int = 7 {
 //    didSet {
@@ -138,23 +139,38 @@ class LocationProvider: NSObject,
     locationManager.stopUpdatingLocation()
   }
 
-  func setHome() {
-    if let location = location {
-      let region = CLCircularRegion(center: location.coordinate,
-                                    radius: 10,
-                                    identifier: "Home")
-      locationManager.startMonitoring(for: region)
+  func addRegion(coordinate: CLLocationCoordinate2D, identifier: String, radius: CLLocationDistance) {
+    let region = CLCircularRegion(center: coordinate,
+                                  radius: radius,
+                                  identifier: identifier)
+    locationManager.startMonitoring(for: region)
 
-      coordinateRegion = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 100, longitudinalMeters: 100)
-
-      writeHome(coordinate: Coordinate(clCoordinate: location.coordinate))
-
-      regions = locationManager.monitoredRegions.map({ clRegion in
-        let circularRegion = clRegion as! CLCircularRegion
-        let coordinate = Coordinate(clCoordinate: circularRegion.center)
-        return MonitoredRegion(name: circularRegion.identifier, coordinate: coordinate, radius: circularRegion.radius)
-      }).sorted(by: { $0.name < $1.name })
+    if let location = location, region.contains(location.coordinate) {
+      dataStore.addRegionUpdate(type: .enter, name: identifier)
     }
+
+    coordinateRegion = MKCoordinateRegion(center: coordinate, latitudinalMeters: 100, longitudinalMeters: 100)
+
+    writeHome(coordinate: Coordinate(clCoordinate: coordinate))
+
+    regions = locationManager.monitoredRegions.map({ clRegion in
+      let circularRegion = clRegion as! CLCircularRegion
+      let coordinate = Coordinate(clCoordinate: circularRegion.center)
+      return MonitoredRegion(name: circularRegion.identifier, coordinate: coordinate, radius: circularRegion.radius)
+    }).sorted(by: { $0.name < $1.name })
+  }
+
+  func deleteRegions(at offsets: IndexSet) {
+    for offset in offsets {
+      let region = regions[offset]
+      if let clRegion = locationManager.monitoredRegions.first(where: { $0.identifier == region.name }) {
+        locationManager.stopMonitoring(for: clRegion)
+        if let location = location, let circularRegion = clRegion as? CLCircularRegion, circularRegion.contains(location.coordinate) {
+          dataStore.addRegionUpdate(type: .exit, name: clRegion.identifier)
+        }
+      }
+    }
+    regions.remove(atOffsets: offsets)
   }
 
 //  func loadRegionUpdates() {

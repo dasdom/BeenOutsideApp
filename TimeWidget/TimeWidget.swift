@@ -95,8 +95,8 @@ struct TimeWidget: Widget {
     StaticConfiguration(kind: kind, provider: Provider()) { entry in
       TimeWidgetEntryView(entry: entry)
     }
-    .configurationDisplayName("My Widget")
-    .description("This is an example widget.")
+    .configurationDisplayName("Current duration")
+    .description("This widget shows the current duration of you being outside or inside.")
     .supportedFamilies([.accessoryRectangular, .systemSmall])
   }
 }

@@ -3,6 +3,7 @@
 //
 
 import Foundation
+import CoreLocation
 
 struct MonitoredRegion: Hashable {
   let name: String
@@ -12,5 +13,14 @@ struct MonitoredRegion: Hashable {
   func hash(into hasher: inout Hasher) {
     hasher.combine(name)
     hasher.combine(coordinate)
+  }
+
+  func contains(location: CLLocation?) -> Bool {
+    guard let location = location else {
+      return false
+    }
+
+    let clRegion = CLCircularRegion(center: coordinate.clCoordinate, radius: radius, identifier: name)
+    return clRegion.contains(location.coordinate)
   }
 }

@@ -8,6 +8,7 @@ import MapKit
 struct RegionsView: View {
 
   @EnvironmentObject private var locationProvider: LocationProvider
+  @State var showsRegionMapView = false
 
   var body: some View {
     List {
@@ -19,13 +20,18 @@ struct RegionsView: View {
             Spacer()
             Text("Radius: \(region.radius, format: .number) m")
           }
+          .shadow(color: (region.contains(location: locationProvider.location) ? Color.green : Color(uiColor: .systemBackground)), radius: 3)
 //          Text("(\(region.coordinate.latitude), \(region.coordinate.longitude))")
           if let distance = distance(for: region), distance > 0 {
             Text("Current distance: \(distance, format: .number) km")
           }
         }
       }
+      .onDelete { indexSet in
+        locationProvider.deleteRegions(at: indexSet)
+      }
     }
+    .sheet(isPresented: $showsRegionMapView, content: { RegionMapView() })
     .navigationTitle("Regions")
     .onAppear {
       locationProvider.startUpdates()
@@ -33,6 +39,22 @@ struct RegionsView: View {
     .onDisappear {
       locationProvider.stopUpdates()
     }
+    .toolbar(content: toolbarContent)
+  }
+
+  @ToolbarContentBuilder
+  func toolbarContent() -> some ToolbarContent {
+    ToolbarItem(placement: .navigationBarTrailing) {
+      Button(action: { showsRegionMapView.toggle() }) {
+        Image(systemName: "plus")
+      }
+    }
+
+//    ToolbarItem(placement: .navigationBarLeading) {
+//      if locationProvider.regions.isEmpty == false {
+//        EditButton()
+//      }
+//    }
   }
 
   func distance(for region: MonitoredRegion) -> Int? {

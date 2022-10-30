@@ -8,26 +8,31 @@ import CoreLocationUI
 struct NotMonitoringRegionView: View {
 
   @EnvironmentObject private var locationProvider: LocationProvider
+  @State var showsRegionMapView = false
 
   var body: some View {
     VStack(spacing: 20) {
       Text("Into the wild")
         .font(.title)
 
-      LocationButton(.currentLocation) {
-        locationProvider.setHome()
-      }
-      .clipShape(RoundedRectangle(cornerRadius: 20))
-      .foregroundColor(.white)
+//      LocationButton(.currentLocation) {
+//        locationProvider.setHome()
+//      }
+//      .clipShape(RoundedRectangle(cornerRadius: 20))
+//      .foregroundColor(.white)
+      Button("Add Region", action: {
+        showsRegionMapView.toggle()
+      })
 
       VStack {
-        Text("Tap the 'Current Location' button when you are home.")
-        Text("This sets your current location as monitored region.")
-          .font(.footnote)
+        Text("You don't have a monitored region yet. Select 'Add Region' to start using region monitoring.")
       }
       .multilineTextAlignment(.center)
     }
     .padding()
+    .sheet(isPresented: $showsRegionMapView) {
+      RegionMapView()
+    }
     .onAppear {
       locationProvider.startUpdates()
     }
