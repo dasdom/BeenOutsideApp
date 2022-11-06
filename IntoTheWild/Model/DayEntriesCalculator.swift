@@ -18,7 +18,7 @@ struct DayEntriesCalculator {
     let calendar = Calendar.current
     let startOfDay = calendar.startOfDay(for: date)
 
-    for regionUpdate in regionUpdates.reversed() {
+    for (index, regionUpdate) in regionUpdates.enumerated().reversed() {
 
       if regionUpdate.date.timeIntervalSince(startOfDay) < 0 {
         break
@@ -37,7 +37,11 @@ struct DayEntriesCalculator {
         }
         enter = nil
       } else if regionUpdate.updateType == .enter {
-        enter = regionUpdate
+        if index == 0 {
+          enter = nil
+        } else {
+          enter = regionUpdate
+        }
       }
     }
 

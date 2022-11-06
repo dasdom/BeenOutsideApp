@@ -3,7 +3,7 @@
 //
 
 import XCTest
-@testable import IntoTheWild
+@testable import BeenOutside
 
 final class DayEntriesCalculatorTests: XCTestCase {
 
@@ -72,6 +72,16 @@ final class DayEntriesCalculatorTests: XCTestCase {
     let regionUpdate2 = RegionUpdate(date: dateFormatter.date(from: "13.10.2022 10:01")!, updateTypeRaw: "enter")
 
     let result = DayEntriesCalculator.durationFor(date: dateFormatter.date(from: "12.10.2022 12:34")!, from: [regionUpdate1, regionUpdate2])
+
+    XCTAssertEqual(result, 0.0, accuracy: 0.1)
+  }
+
+  func test_durationFor_yesterdayWhenEnterToday_shouldBeZero() {
+    let regionUpdate1 = RegionUpdate(date: dateFormatter.date(from: "13.10.2022 10:01")!, updateTypeRaw: "enter")
+    let regionUpdate2 = RegionUpdate(date: dateFormatter.date(from: "14.10.2022 10:01")!, updateTypeRaw: "exit")
+    let regionUpdate3 = RegionUpdate(date: dateFormatter.date(from: "14.10.2022 16:01")!, updateTypeRaw: "enter")
+
+    let result = DayEntriesCalculator.durationFor(date: dateFormatter.date(from: "12.10.2022 12:34")!, from: [regionUpdate1, regionUpdate2, regionUpdate3])
 
     XCTAssertEqual(result, 0.0, accuracy: 0.1)
   }

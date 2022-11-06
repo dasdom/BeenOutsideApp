@@ -165,7 +165,7 @@ class LocationProvider: NSObject,
       let region = regions[offset]
       if let clRegion = locationManager.monitoredRegions.first(where: { $0.identifier == region.name }) {
         locationManager.stopMonitoring(for: clRegion)
-        if let location = location, let circularRegion = clRegion as? CLCircularRegion, circularRegion.contains(location.coordinate) {
+        if regions.count > 1, let location = location, let circularRegion = clRegion as? CLCircularRegion, circularRegion.contains(location.coordinate) {
           dataStore.addRegionUpdate(type: .exit, name: clRegion.identifier)
         }
       }

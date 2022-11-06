@@ -20,6 +20,8 @@
 		F211870328FBFD6F00109CD1 /* RegionUpdateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F227EBFF23B8E80B007C6B2A /* RegionUpdateExtension.swift */; };
 		F211870428FBFD8B00109CD1 /* UpdateType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F227EC0123B8E9C3007C6B2A /* UpdateType.swift */; };
 		F211870C28FC049A00109CD1 /* SQLighter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F207AC2028E7247C0081EF64 /* SQLighter.swift */; };
+		F2217F5B2910466300F2C84E /* Lighter in Frameworks */ = {isa = PBXBuildFile; productRef = F2217F5A2910466300F2C84E /* Lighter */; };
+		F2217F5D291076C000F2C84E /* Lighter in Frameworks */ = {isa = PBXBuildFile; productRef = F2217F5C291076C000F2C84E /* Lighter */; };
 		F227EC0223B8E9C3007C6B2A /* UpdateType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F227EC0123B8E9C3007C6B2A /* UpdateType.swift */; };
 		F227EC0423B9FE2D007C6B2A /* FileManagerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F227EC0323B9FE2D007C6B2A /* FileManagerExtension.swift */; };
 		F227EC0A23BA6209007C6B2A /* DayEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = F227EC0923BA6209007C6B2A /* DayEntry.swift */; };
@@ -28,7 +30,6 @@
 		F228A4D828E96ECA007EF4E3 /* DayEntriesCalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F228A4D728E96ECA007EF4E3 /* DayEntriesCalculatorTests.swift */; };
 		F23FE52429091D520091A9C1 /* NoEntriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F23FE52329091D520091A9C1 /* NoEntriesView.swift */; };
 		F23FE53A290AC50E0091A9C1 /* RegionMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F23FE539290AC50E0091A9C1 /* RegionMapView.swift */; };
-		F23FE53D290F22600091A9C1 /* Lighter in Frameworks */ = {isa = PBXBuildFile; productRef = F23FE53C290F22600091A9C1 /* Lighter */; };
 		F262BC4223B73012006EE628 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F262BC4123B73012006EE628 /* AppDelegate.swift */; };
 		F262BC4423B73012006EE628 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F262BC4323B73012006EE628 /* SceneDelegate.swift */; };
 		F262BC4623B73012006EE628 /* OutsideDurationOverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F262BC4523B73012006EE628 /* OutsideDurationOverviewView.swift */; };
@@ -119,6 +120,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F2217F5D291076C000F2C84E /* Lighter in Frameworks */,
 				F21186EF28FBF40E00109CD1 /* SwiftUI.framework in Frameworks */,
 				F21186ED28FBF40E00109CD1 /* WidgetKit.framework in Frameworks */,
 			);
@@ -135,7 +137,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F23FE53D290F22600091A9C1 /* Lighter in Frameworks */,
+				F2217F5B2910466300F2C84E /* Lighter in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -289,6 +291,7 @@
 			);
 			name = TimeWidgetExtension;
 			packageProductDependencies = (
+				F2217F5C291076C000F2C84E /* Lighter */,
 			);
 			productName = TimeWidgetExtension;
 			productReference = F21186EA28FBF40E00109CD1 /* TimeWidgetExtension.appex */;
@@ -328,7 +331,7 @@
 			);
 			name = BeenOutside;
 			packageProductDependencies = (
-				F23FE53C290F22600091A9C1 /* Lighter */,
+				F2217F5A2910466300F2C84E /* Lighter */,
 			);
 			productName = IntoTheWild;
 			productReference = F262BC3E23B73012006EE628 /* BeenOutside.app */;
@@ -366,7 +369,7 @@
 			);
 			mainGroup = F262BC3523B73012006EE628;
 			packageReferences = (
-				F23FE53B290F22600091A9C1 /* XCRemoteSwiftPackageReference "Lighter" */,
+				F2217F592910466300F2C84E /* XCRemoteSwiftPackageReference "Lighter" */,
 			);
 			productRefGroup = F262BC3F23B73012006EE628 /* Products */;
 			projectDirPath = "";
@@ -801,20 +804,25 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		F23FE53B290F22600091A9C1 /* XCRemoteSwiftPackageReference "Lighter" */ = {
+		F2217F592910466300F2C84E /* XCRemoteSwiftPackageReference "Lighter" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Lighter-swift/Lighter";
 			requirement = {
-				branch = develop;
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.16;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		F23FE53C290F22600091A9C1 /* Lighter */ = {
+		F2217F5A2910466300F2C84E /* Lighter */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = F23FE53B290F22600091A9C1 /* XCRemoteSwiftPackageReference "Lighter" */;
+			package = F2217F592910466300F2C84E /* XCRemoteSwiftPackageReference "Lighter" */;
+			productName = Lighter;
+		};
+		F2217F5C291076C000F2C84E /* Lighter */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F2217F592910466300F2C84E /* XCRemoteSwiftPackageReference "Lighter" */;
 			productName = Lighter;
 		};
 /* End XCSwiftPackageProductDependency section */
