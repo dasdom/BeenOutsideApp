@@ -86,6 +86,7 @@ struct OutsideDurationOverviewView: View {
           Text(date, style: .relative)
         }
       }
+        .padding([.bottom], 5)
     )
   }
 

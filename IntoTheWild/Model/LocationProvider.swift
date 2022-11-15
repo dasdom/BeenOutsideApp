@@ -14,33 +14,11 @@ class LocationProvider: NSObject,
                         CLLocationManagerDelegate,
                         ObservableObject {
 
-//  var db: BeenOutside!
   @Published var wrongAuthorization = false
   @Published var location: CLLocation?
-//  @Published var dayEntries: [DayEntry] = []
-//  @Published var place: IdentifiablePlace = IdentifiablePlace(lat: 0, long: 0)
-//  @Published var average: Double = 0
-//  @Published var last28DaysTotal: Duration = .seconds(0)
   @Published var regions: [MonitoredRegion] = []
   @Published var coordinateRegion: MKCoordinateRegion?
-//  {
-//    didSet {
-//      if let center = coordinateRegion?.center {
-//        place = IdentifiablePlace(lat: center.latitude, long: center.longitude)
-//      }
-//    }
-//  }
   let locationManager: CLLocationManager
-//  var numberOfDays: Int = 7 {
-//    didSet {
-//      updateValues()
-//    }
-//  }
-//  var regionUpdates: [RegionUpdate] = [] {
-//    didSet {
-//      updateValues()
-//    }
-//  }
   let dataStore: DataStore
 
   init(dataStore: DataStore) {
@@ -113,24 +91,6 @@ class LocationProvider: NSObject,
     dataStore.addRegionUpdate(type: .exit, name: region.identifier)
   }
 
-//  func addRegionUpdate(type: UpdateType, name: String? = nil) {
-//
-//    let now = Date()
-//
-//    let lastUpdateType = regionUpdates.last?.updateType
-//    if type != lastUpdateType {
-//      let id = (regionUpdates.last?.id ?? 0) + 1
-//      let regionUpdate = RegionUpdate(id: id, date: now, updateTypeRaw: type.rawValue, regionName: name)
-//      regionUpdates.append(regionUpdate)
-//      do {
-//        _ = try db.insert(regionUpdate)
-//      } catch {
-//        print("\(#filePath), \(#line): error: \(error)")
-//
-//      }
-//    }
-//  }
-
   func startUpdates() {
     locationManager.startUpdatingLocation()
   }
@@ -173,20 +133,6 @@ class LocationProvider: NSObject,
     regions.remove(atOffsets: offsets)
   }
 
-//  func loadRegionUpdates() {
-//    let sqliteURL = FileManager.default.regionUpdatesSQLitePath()
-//    do {
-//      db = try BeenOutside.bootstrap(at: sqliteURL)
-//    } catch {
-//      print("\(#filePath), \(#line): error: \(error)")
-//    }
-//    do {
-//      regionUpdates = try db.regionUpdates.fetch(limit: 50)
-//    } catch {
-//      regionUpdates = []
-//    }
-//  }
-
   func writeHome(coordinate: Coordinate) {
     do {
       let data = try JSONEncoder().encode(coordinate)
@@ -205,12 +151,4 @@ class LocationProvider: NSObject,
     }
     return nil
   }
-
-//  func updateValues() {
-//    dayEntries = DayEntriesCalculator.dayEntries(from: regionUpdates, numberOfDays: numberOfDays)
-//    let totalSeconds = dayEntries.filter({ $0.type == .outside }).map({ $0.duration }).reduce(0.0, +)
-//    last28DaysTotal = .seconds(totalSeconds)
-//    average = totalSeconds / 60.0 / 60.0 / Double(numberOfDays)
-//    print("totalSeconds: \(totalSeconds), average: \(average), numberOfDays: \(numberOfDays)")
-//  }
 }

@@ -24,6 +24,8 @@ struct RegionsView: View {
 //          Text("(\(region.coordinate.latitude), \(region.coordinate.longitude))")
           if let distance = distance(for: region), distance > 0 {
             Text("Current distance: \(distance, format: .number) km")
+          } else {
+            Text("Current distance: < 1 km")
           }
         }
       }
@@ -44,9 +46,11 @@ struct RegionsView: View {
 
   @ToolbarContentBuilder
   func toolbarContent() -> some ToolbarContent {
-    ToolbarItem(placement: .navigationBarTrailing) {
-      Button(action: { showsRegionMapView.toggle() }) {
-        Image(systemName: "plus")
+    if locationProvider.regions.count < 10 {
+      ToolbarItem(placement: .navigationBarTrailing) {
+        Button(action: { showsRegionMapView.toggle() }) {
+          Image(systemName: "plus")
+        }
       }
     }
 

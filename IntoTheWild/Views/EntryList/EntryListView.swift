@@ -6,6 +6,10 @@ import SwiftUI
 
 struct EntryListView: View {
 
+  private enum Destination {
+    case share
+  }
+
   @EnvironmentObject private var locationProvider: LocationProvider
   @EnvironmentObject private var dataStore: DataStore
   @State private var selectedDataType = 0
@@ -47,5 +51,13 @@ struct EntryListView: View {
 //      }
     }
     .navigationTitle("Entries")
+    .toolbar {
+      let sqliteURL = FileManager.default.regionUpdatesSQLitePath()
+      if let data = try? Data(contentsOf: sqliteURL) {
+        ToolbarItem(placement: .navigationBarTrailing) {
+          ShareLink(item: data, preview: SharePreview(Text("SQLite database")))
+        }
+      }
+    }
   }
 }
