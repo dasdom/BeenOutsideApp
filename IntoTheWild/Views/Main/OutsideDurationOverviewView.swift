@@ -73,10 +73,10 @@ struct OutsideDurationOverviewView: View {
     switch updateType {
       case .exit:
         imageName = "leaf"
-        text = "Outside since"
+        text = "Outside for"
       case .enter:
         imageName = "house"
-        text = "Inside since"
+        text = "Inside for"
     }
     return AnyView(
       HStack {
