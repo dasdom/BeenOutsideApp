@@ -38,7 +38,7 @@ class DataStore: ObservableObject {
       print("\(#filePath), \(#line): error: \(error)")
     }
     do {
-      regionUpdates = try db.regionUpdates.fetch(limit: 100)
+      regionUpdates = try db.regionUpdates.fetch(limit: 100, orderBy: \.date, .descending).sorted(by: { $0.date < $1.date })
     } catch {
       regionUpdates = []
     }
