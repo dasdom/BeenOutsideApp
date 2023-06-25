@@ -21,11 +21,14 @@ struct RegionsView: View {
             Text("Radius: \(region.radius, format: .number) m")
           }
           .shadow(color: (region.contains(location: locationProvider.location) ? Color.green : Color(uiColor: .systemBackground)), radius: 3)
-//          Text("(\(region.coordinate.latitude), \(region.coordinate.longitude))")
           if let distance = distance(for: region), distance > 0 {
             Text("Current distance: \(distance, format: .number) km")
           } else {
             Text("Current distance: < 1 km")
+          }
+          if let date = region.date {
+            Text("Created: \(date.formatted(.dateTime.year().month().day().hour().minute()))")
+              .font(.footnote)
           }
         }
       }
@@ -53,12 +56,6 @@ struct RegionsView: View {
         }
       }
     }
-
-//    ToolbarItem(placement: .navigationBarLeading) {
-//      if locationProvider.regions.isEmpty == false {
-//        EditButton()
-//      }
-//    }
   }
 
   func distance(for region: MonitoredRegion) -> Int? {

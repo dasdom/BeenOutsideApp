@@ -37,7 +37,9 @@ class LocationProvider: NSObject,
     regions = locationManager.monitoredRegions.map({ clRegion in
       let circularRegion = clRegion as! CLCircularRegion
       let coordinate = Coordinate(clCoordinate: circularRegion.center)
-      return MonitoredRegion(name: circularRegion.identifier, coordinate: coordinate, radius: circularRegion.radius)
+      let timestamp = UserDefaults.standard.double(forKey: String(describing: coordinate))
+      let date: Date? = timestamp > 0.1 ? Date(timeIntervalSince1970: timestamp) : nil
+      return MonitoredRegion(name: circularRegion.identifier, coordinate: coordinate, radius: circularRegion.radius, date: date)
     }).sorted(by: { $0.name < $1.name })
 
     if let homeCoordinate = loadHome() {
@@ -105,6 +107,10 @@ class LocationProvider: NSObject,
                                   identifier: identifier)
     locationManager.startMonitoring(for: region)
 
+    let key = Coordinate(clCoordinate: coordinate)
+    let timestamp = Date().timeIntervalSince1970
+    UserDefaults.standard.setValue(timestamp, forKey: String(describing: Coordinate(clCoordinate: coordinate)))
+
     if let location = location, region.contains(location.coordinate) {
       dataStore.addRegionUpdate(type: .enter, name: identifier)
     }
@@ -116,7 +122,9 @@ class LocationProvider: NSObject,
     regions = locationManager.monitoredRegions.map({ clRegion in
       let circularRegion = clRegion as! CLCircularRegion
       let coordinate = Coordinate(clCoordinate: circularRegion.center)
-      return MonitoredRegion(name: circularRegion.identifier, coordinate: coordinate, radius: circularRegion.radius)
+      let timestamp = UserDefaults.standard.double(forKey: String(describing: coordinate))
+      let date: Date? = timestamp > 0.1 ? Date(timeIntervalSince1970: timestamp) : nil
+      return MonitoredRegion(name: circularRegion.identifier, coordinate: coordinate, radius: circularRegion.radius, date: date)
     }).sorted(by: { $0.name < $1.name })
   }
 

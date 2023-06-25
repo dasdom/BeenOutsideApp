@@ -37,4 +37,8 @@ extension FileManager {
   func homeCoordinateURL() -> URL {
     return URL.documentsDirectory.appendingPathComponent("home.json")
   }
+
+  func creationDatesURL() -> URL {
+    return URL.documentsDirectory.appendingPathComponent("creationDates")
+  }
 }

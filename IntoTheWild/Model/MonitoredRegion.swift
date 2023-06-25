@@ -9,6 +9,7 @@ struct MonitoredRegion: Hashable {
   let name: String
   let coordinate: Coordinate
   let radius: Double
+  let date: Date?
 
   func hash(into hasher: inout Hasher) {
     hasher.combine(name)
