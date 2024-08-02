@@ -17,6 +17,8 @@ struct OutsideDurationChartView: View {
       Picker("Time Frame", selection: $selectedTimeFrame) {
         Text("7 days").tag(0)
         Text("30 days").tag(1)
+        Text("60 days").tag(2)
+        Text("90 days").tag(3)
       }
       .pickerStyle(.segmented)
 
@@ -53,6 +55,10 @@ struct OutsideDurationChartView: View {
           dataStore.numberOfDays = 7
         case 1:
           dataStore.numberOfDays = 30
+        case 2:
+          dataStore.numberOfDays = 60
+        case 3:
+          dataStore.numberOfDays = 90
         default:
           dataStore.numberOfDays = 7
       }

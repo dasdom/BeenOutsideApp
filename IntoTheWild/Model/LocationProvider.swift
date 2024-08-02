@@ -107,7 +107,6 @@ class LocationProvider: NSObject,
                                   identifier: identifier)
     locationManager.startMonitoring(for: region)
 
-    let key = Coordinate(clCoordinate: coordinate)
     let timestamp = Date().timeIntervalSince1970
     UserDefaults.standard.setValue(timestamp, forKey: String(describing: Coordinate(clCoordinate: coordinate)))
 
